@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/crimson_moon.iml" filepath="$PROJECT_DIR$/crimson_moon.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/crimson_moon.main.iml" filepath="$PROJECT_DIR$/.idea/modules/crimson_moon.main.iml" />
     </modules>
   </component>
 </project>
