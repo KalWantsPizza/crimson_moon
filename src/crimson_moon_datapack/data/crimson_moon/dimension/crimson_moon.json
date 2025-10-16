@@ -1,0 +1,20 @@
+{
+  "type": "crimson_moon:crimson_moon",
+  "generator": {
+    "type": "minecraft:noise",
+    "seed": 0,
+    "biome_source": {
+      "type": "minecraft:multi_noise",
+      "biomes": [
+        { "biome": "crimson_moon:lava_river",      "parameters": { "temperature": 0.95, "humidity": 0.05, "continentalness": -0.75, "erosion": 0.60,  "weirdness": 0.00, "depth": 0.00, "offset": 0.00 } },
+        { "biome": "crimson_moon:scorched_delta",  "parameters": { "temperature": 0.90, "humidity": 0.10, "continentalness": -0.20, "erosion": 0.30,  "weirdness": 0.00, "depth": 0.00, "offset": 0.00 } },
+        { "biome": "crimson_moon:crimson_plains",  "parameters": { "temperature": 0.70, "humidity": 0.30, "continentalness":  0.10, "erosion": 0.00,  "weirdness": 0.00, "depth": 0.00, "offset": 0.00 } },
+        { "biome": "crimson_moon:crimson_river",   "parameters": { "temperature": 0.60, "humidity": 0.70, "continentalness": -0.50, "erosion": 0.60,  "weirdness": 0.00, "depth": 0.00, "offset": 0.00 } },
+        { "biome": "crimson_moon:crimson_beach",   "parameters": { "temperature": 0.60, "humidity": 0.80, "continentalness": -0.95, "erosion": 0.40,  "weirdness": 0.00, "depth": 0.00, "offset": 0.00 } },
+        { "biome": "crimson_moon:deepslate_peaks", "parameters": { "temperature": 0.30, "humidity": 0.10, "continentalness":  0.70, "erosion": -0.80, "weirdness": 0.00, "depth": 0.00, "offset": 0.00 } },
+        { "biome": "crimson_moon:warped_oasis",    "parameters": { "temperature": 0.40, "humidity": 1.00, "continentalness":  0.00, "erosion": 0.20,  "weirdness": 0.80, "depth": 0.00, "offset": 0.00 } }
+      ]
+    },
+    "settings": "crimson_moon:crimson_moon_noise"
+  }
+}

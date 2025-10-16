@@ -1,0 +1,66 @@
+{
+  "temperature": 1.8,
+  "downfall": 0.0,
+  "precipitation": "none",
+  "effects": {
+    "sky_color": 13750779,
+    "fog_color": 10527146,
+    "water_color": 11563794,
+    "water_fog_color": 6946826,
+    "grass_color": 11141120,
+    "foliage_color": 9737364,
+    "mood_sound": {
+      "sound": "minecraft:ambient.nether_wastes.mood",
+      "tick_delay": 6000,
+      "offset": 2.0,
+      "block_search_extent": 8
+    },
+    "ambient_sound": "minecraft:ambient.nether_wastes.loop",
+    "additions_sound": {
+      "sound": "minecraft:block.lava.pop",
+      "tick_chance": 0.01
+    },
+    "particle": {
+      "options": { "type": "minecraft:ash" },
+      "probability": 0.005
+    }
+  },
+  "spawners": {
+    "monster": [
+      { "type": "minecraft:husk", "weight": 100, "minCount": 2, "maxCount": 4 },
+      { "type": "minecraft:skeleton", "weight": 80, "minCount": 2, "maxCount": 4 },
+      { "type": "minecraft:hoglin", "weight": 60, "minCount": 1, "maxCount": 3 },
+      { "type": "minecraft:spider", "weight": 80, "minCount": 2, "maxCount": 4 }
+    ],
+    "creature": [
+      { "type": "minecraft:cow", "weight": 10, "minCount": 2, "maxCount": 4 },
+      { "type": "minecraft:sheep", "weight": 10, "minCount": 2, "maxCount": 4 },
+      { "type": "minecraft:rabbit", "weight": 15, "minCount": 1, "maxCount": 3 }
+    ],
+    "ambient": [],
+    "water_creature": [],
+    "underground_water_creature": []
+  },
+  "spawn_costs": {},
+  "carvers": {},
+  "features": [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    []
+  ],
+  "player_spawn_friendly": true,
+  "has_precipitation": false,
+  "temperature_modifier": "none",
+  "surface_builder": "minecraft:default",
+  "category": "none",
+  "depth": 0.125,
+  "scale": 0.05
+}

@@ -1,0 +1,43 @@
+{
+  "temperature": 0.8,
+  "downfall": 0.3,
+  "precipitation": "none",
+  "has_precipitation": false,
+  "category": "none",
+  "effects": {
+    "sky_color": 8169408,
+    "fog_color": 7100227,
+    "water_color": 5933108,
+    "water_fog_color": 5997338,
+    "grass_color": 6217088,
+    "foliage_color": 6108890,
+    "ambient_sound": "minecraft:ambient.crimson_forest.loop",
+    "mood_sound": {
+      "sound": "minecraft:ambient.cave",
+      "tick_delay": 6000,
+      "offset": 2.0,
+      "block_search_extent": 8
+    },
+    "additions_sound": {
+      "sound": "minecraft:block.water.ambient",
+      "tick_chance": 0.01
+    },
+    "particle": { "options": { "type": "minecraft:warped_spore" }, "probability": 0.01 }
+  },
+  "spawners": {
+    "creature": [
+      { "type": "minecraft:glow_squid", "weight": 10, "minCount": 2, "maxCount": 4 },
+      { "type": "minecraft:frog", "weight": 8, "minCount": 1, "maxCount": 2 },
+      { "type": "minecraft:turtle", "weight": 2, "minCount": 1, "maxCount": 1 },
+      { "type": "minecraft:sheep", "weight": 6, "minCount": 2, "maxCount": 3 },
+      { "type": "minecraft:allay", "weight": 1, "minCount": 1, "maxCount": 1 }
+    ],
+    "monster": [],
+    "ambient": [],
+    "water_creature": [],
+    "underground_water_creature": []
+  },
+  "spawn_costs": {},
+  "carvers": {},
+  "features": [ [], [], [], [], [], [], [], [], [], [], [] ]
+}

@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:sequence",
+  "sequence": [
+    {
+      "if_true": { "above_preliminary_surface": {} },
+      "then_run": {
+        "type": "minecraft:sequence",
+        "sequence": [
+          {
+            "if_true": { "is_surface": {} },
+            "then_run": { "type": "minecraft:block", "result_state": { "Name": "minecraft:red_sand" } }
+          },
+          {
+            "if_true": { "not": { "is_surface": {} } },
+            "then_run": { "type": "minecraft:block", "result_state": { "Name": "minecraft:red_sandstone" } }
+          }
+        ]
+      }
+    },
+    { "else_run": { "type": "minecraft:block", "result_state": { "Name": "minecraft:stone" } } }
+  ]
+}

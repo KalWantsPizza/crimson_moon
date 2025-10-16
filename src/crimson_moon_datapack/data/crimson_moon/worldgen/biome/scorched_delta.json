@@ -1,0 +1,41 @@
+{
+  "temperature": 2.1,
+  "downfall": 0.0,
+  "precipitation": "none",
+  "has_precipitation": false,
+  "category": "none",
+  "effects": {
+    "sky_color": 11839535,
+    "fog_color": 9182766,
+    "water_color": 11803488,
+    "water_fog_color": 7099136,
+    "grass_color": 9276813,
+    "foliage_color": 9276813,
+    "ambient_sound": "minecraft:ambient.basalt_deltas.loop",
+    "mood_sound": {
+      "sound": "minecraft:ambient.basalt_deltas.mood",
+      "tick_delay": 6000,
+      "offset": 2.0,
+      "block_search_extent": 8
+    },
+    "additions_sound": {
+      "sound": "minecraft:block.lava.pop",
+      "tick_chance": 0.01
+    },
+    "particle": { "options": { "type": "minecraft:ash" }, "probability": 0.01 }
+  },
+  "spawners": {
+    "monster": [
+      { "type": "minecraft:magma_cube", "weight": 100, "minCount": 1, "maxCount": 3 },
+      { "type": "minecraft:zombified_piglin", "weight": 60, "minCount": 1, "maxCount": 2 },
+      { "type": "minecraft:skeleton", "weight": 20, "minCount": 1, "maxCount": 2 }
+    ],
+    "ambient": [ { "type": "minecraft:enderman", "weight": 10, "minCount": 1, "maxCount": 2 } ],
+    "creature": [],
+    "water_creature": [],
+    "underground_water_creature": []
+  },
+  "spawn_costs": {},
+  "carvers": {},
+  "features": [ [], [], [], [], [], [], [], [], [], [], [] ]
+}

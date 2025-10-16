@@ -1,0 +1,29 @@
+{
+  "temperature": 0.9,
+  "downfall": 0.0,
+  "precipitation": "none",
+  "has_precipitation": false,
+  "category": "mountain",
+  "effects": {
+    "sky_color": 7368816,
+    "fog_color": 4809850,
+    "water_color": 4915344,
+    "water_fog_color": 5129600,
+    "particle": {
+      "options": { "type": "minecraft:spore_blossom_air" },
+      "probability": 0.005
+    }
+  },
+  "spawners": {
+    "creature": [
+      { "type": "minecraft:goat", "weight": 8, "minCount": 1, "maxCount": 3 }
+    ],
+    "monster": [
+      { "type": "minecraft:stray", "weight": 20, "minCount": 1, "maxCount": 2 },
+      { "type": "minecraft:enderman", "weight": 5, "minCount": 1, "maxCount": 1 }
+    ]
+  },
+  "spawn_costs": {},
+  "carvers": {},
+  "features": [ [], [], [], [], [], [], [], [], [], [], [] ]
+}

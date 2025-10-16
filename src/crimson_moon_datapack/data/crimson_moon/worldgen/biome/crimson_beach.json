@@ -1,0 +1,45 @@
+{
+  "temperature": 1.2,
+  "downfall": 0.1,
+  "precipitation": "none",
+  "has_precipitation": false,
+  "category": "beach",
+  "effects": {
+    "sky_color": 14079744,
+    "fog_color": 10855403,
+    "water_color": 12736255,
+    "water_fog_color": 7889784,
+    "grass_color": 11529574,
+    "foliage_color": 11184810,
+    "ambient_sound": "minecraft:ambient.basalt_deltas.additions",
+    "mood_sound": {
+      "sound": "minecraft:ambient.cave",
+      "tick_delay": 6000,
+      "offset": 2.0,
+      "block_search_extent": 8
+    },
+    "particle": { "options": { "type": "minecraft:ash" }, "probability": 0.002 }
+  },
+  "spawners": {
+    "creature": [
+      { "type": "minecraft:chicken", "weight": 10, "minCount": 2, "maxCount": 4 },
+      { "type": "minecraft:sheep", "weight": 8, "minCount": 2, "maxCount": 4 },
+      { "type": "minecraft:pig", "weight": 6, "minCount": 1, "maxCount": 3 },
+      { "type": "minecraft:turtle", "weight": 4, "minCount": 1, "maxCount": 2 }
+    ],
+    "water_creature": [
+      { "type": "minecraft:cod", "weight": 5, "minCount": 2, "maxCount": 4 },
+      { "type": "minecraft:salmon", "weight": 5, "minCount": 2, "maxCount": 4 },
+      { "type": "minecraft:squid", "weight": 2, "minCount": 1, "maxCount": 2 }
+    ],
+    "monster": [
+      { "type": "minecraft:zombie", "weight": 10, "minCount": 1, "maxCount": 2 },
+      { "type": "minecraft:skeleton", "weight": 10, "minCount": 1, "maxCount": 2 }
+    ],
+    "ambient": [],
+    "underground_water_creature": []
+  },
+  "spawn_costs": {},
+  "carvers": {},
+  "features": [ [], [], [], [], [], [], [], [], [], [], [] ]
+}
