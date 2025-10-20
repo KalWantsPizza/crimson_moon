@@ -1,4 +1,4 @@
-package dev.kalwantspizza.crimson_moon;
+package dev.orbitingslice.crimson_moon;
 
 import java.util.List;
 

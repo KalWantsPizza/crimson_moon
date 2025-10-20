@@ -1,5 +1,7 @@
-package dev.kalwantspizza.crimson_moon;
+package dev.orbitingslice.crimson_moon;
 
+import dev.orbitingslice.datagen_kit.worldgen.base.ModBiomes;
+import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -43,6 +45,12 @@ public class CrimsonMoon {
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
+        //event.enqueueWork(() -> {
+        //    ModBiomes.registerBiomes();
+        //        });
+
+
+
         // Some common setup code
         LOGGER.info("HELLO FROM COMMON SETUP");
 
@@ -54,7 +62,6 @@ public class CrimsonMoon {
 
         Config.ITEM_STRINGS.get().forEach((item) -> LOGGER.info("ITEM >> {}", item));
     }
-
     // Add the example block item to the building blocks tab
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
 
@@ -65,5 +72,9 @@ public class CrimsonMoon {
     public void onServerStarting(ServerStartingEvent event) {
         // Do something when the server starts
         LOGGER.info("HELLO from server starting");
+    }
+
+    public static ResourceLocation resource(String path){
+        return ResourceLocation.fromNamespaceAndPath(MOD_ID,path);
     }
 }
