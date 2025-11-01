@@ -43,17 +43,17 @@ public class CrimsonMoonNoiseGeneratorSettings {
                 DensityFunctions.zero(), // fluid_level_floodedness
                 DensityFunctions.zero(), // fluid_level_spread
                 DensityFunctions.zero(), // lava
-                DensityFunctions.noise(noiseParams.getOrThrow(Noises.TEMPERATURE)), // temperature variation
-                DensityFunctions.noise(noiseParams.getOrThrow(Noises.VEGETATION)), // vegetation
-                DensityFunctions.noise(noiseParams.getOrThrow(Noises.CONTINENTALNESS)), // continents
-                DensityFunctions.noise(noiseParams.getOrThrow(Noises.EROSION)), // erosion
+                DensityFunctions.shiftedNoise2d(DensityFunctions.zero(), DensityFunctions.zero(), 0.015, noiseParams.getOrThrow(Noises.TEMPERATURE)), // temperature variation
+                DensityFunctions.shiftedNoise2d(DensityFunctions.zero(), DensityFunctions.zero(), 0.03, noiseParams.getOrThrow(Noises.VEGETATION)), // vegetation
+                DensityFunctions.shiftedNoise2d(DensityFunctions.zero(), DensityFunctions.zero(), 0.008, noiseParams.getOrThrow(Noises.CONTINENTALNESS)), // continents
+                DensityFunctions.shiftedNoise2d(DensityFunctions.zero(), DensityFunctions.zero(), 0.02, noiseParams.getOrThrow(Noises.EROSION)), // erosion
                 DensityFunctions.yClampedGradient(
                         settings.minY(),
                         settings.minY() + settings.height(),
                         -1.0,
                         1.0
                 ), // depth gradient
-                DensityFunctions.noise(noiseParams.getOrThrow(Noises.RIDGE)), // ridges
+                DensityFunctions.shiftedNoise2d(DensityFunctions.zero(), DensityFunctions.zero(), 0.06, noiseParams.getOrThrow(Noises.RIDGE)), // ridges
                 DensityFunctions.yClampedGradient(
                         settings.minY(),
                         settings.minY() + settings.height(),

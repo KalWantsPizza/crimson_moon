@@ -29,22 +29,22 @@ public class CrimsonMoonBiomes {
         var placed = context.lookup(Registries.PLACED_FEATURE);
         var carvers = context.lookup(Registries.CONFIGURED_CARVER);
 
-        register(context, CRIMSON_PLAINS, createBiome(1.8F, 0.0F, ColorPalettes.CRIMSON_FOG, ColorPalettes.CRIMSON_WATER, ColorPalettes.CRIMSON_WATER, ColorPalettes.CRIMSON_SKY, placed, carvers));
-        register(context, CRIMSON_RIVER, createBiome(1.4F, 0.0F, ColorPalettes.CRIMSON_FOG, ColorPalettes.CRIMSON_WATER, ColorPalettes.CRIMSON_WATER, ColorPalettes.CRIMSON_SKY, placed, carvers));
-        register(context, LAVA_RIVER, createBiome(1.6F, 0.0F, ColorPalettes.CRIMSON_FOG, ColorPalettes.CRIMSON_LAVA, ColorPalettes.CRIMSON_LAVA, ColorPalettes.CRIMSON_SKY, placed, carvers));
-        register(context, CRIMSON_BEACH, createBiome(1.6F, 0.0F, ColorPalettes.CRIMSON_FOG, ColorPalettes.CRIMSON_WATER, ColorPalettes.CRIMSON_WATER, ColorPalettes.CRIMSON_SKY, placed, carvers));
-        register(context, SCORCHED_DELTA, createBiome(2.0F, 0.0F, ColorPalettes.CRIMSON_FOG, ColorPalettes.CRIMSON_LAVA, ColorPalettes.CRIMSON_LAVA, ColorPalettes.CRIMSON_SKY, placed, carvers));
-        register(context, DEEPSLATE_CAVES, createBiome(0.8F, 0.0F, ColorPalettes.DEEPSLATE_FOG, ColorPalettes.DEEPSLATE_WATER, ColorPalettes.DEEPSLATE_WATER, ColorPalettes.DEEPSLATE_SKY, placed, carvers));
-        register(context, DEEPSLATE_PEAKS, createBiome(0.5F, 0.0F, ColorPalettes.DEEPSLATE_FOG, ColorPalettes.DEEPSLATE_WATER, ColorPalettes.DEEPSLATE_WATER, ColorPalettes.DEEPSLATE_SKY, placed, carvers));
-        register(context, WARPED_OASIS, createBiome(1.2F, 0.0F, ColorPalettes.WARPED_FOG, ColorPalettes.WARPED_WATER, ColorPalettes.WARPED_WATER, ColorPalettes.WARPED_SKY, placed, carvers));
-        register(context, FROZEN_LAVA_TUBES, createBiome(0.0F, 0.0F, ColorPalettes.FROZEN_FOG, ColorPalettes.FROZEN_WATER, ColorPalettes.FROZEN_WATER, ColorPalettes.FROZEN_SKY, placed, carvers));
+        register(context, CRIMSON_PLAINS, createBiome(1.8F, 0.0F, ColorPalettes.CRIMSON_FOG, ColorPalettes.CRIMSON_WATER, ColorPalettes.CRIMSON_WATER, ColorPalettes.CRIMSON_SKY, ColorPalettes.CRIMSON_GRASS, ColorPalettes.CRIMSON_FOLIAGE, placed, carvers));
+        register(context, CRIMSON_RIVER, createBiome(1.4F, 0.0F, ColorPalettes.CRIMSON_FOG, ColorPalettes.CRIMSON_WATER, ColorPalettes.CRIMSON_WATER, ColorPalettes.CRIMSON_SKY, ColorPalettes.CRIMSON_GRASS, ColorPalettes.CRIMSON_FOLIAGE, placed, carvers));
+        register(context, LAVA_RIVER, createBiome(1.6F, 0.0F, ColorPalettes.CRIMSON_FOG, ColorPalettes.CRIMSON_LAVA, ColorPalettes.CRIMSON_LAVA, ColorPalettes.CRIMSON_SKY, ColorPalettes.CRIMSON_GRASS, ColorPalettes.CRIMSON_FOLIAGE, placed, carvers));
+        register(context, CRIMSON_BEACH, createBiome(1.6F, 0.0F, ColorPalettes.CRIMSON_FOG, ColorPalettes.CRIMSON_WATER, ColorPalettes.CRIMSON_WATER, ColorPalettes.CRIMSON_SKY, ColorPalettes.CRIMSON_GRASS, ColorPalettes.CRIMSON_FOLIAGE, placed, carvers));
+        register(context, SCORCHED_DELTA, createBiome(2.0F, 0.0F, ColorPalettes.CRIMSON_FOG, ColorPalettes.CRIMSON_LAVA, ColorPalettes.CRIMSON_LAVA, ColorPalettes.CRIMSON_SKY, ColorPalettes.CRIMSON_GRASS, ColorPalettes.CRIMSON_FOLIAGE, placed, carvers));
+        register(context, DEEPSLATE_CAVES, createBiome(0.8F, 0.0F, ColorPalettes.DEEPSLATE_FOG, ColorPalettes.DEEPSLATE_WATER, ColorPalettes.DEEPSLATE_WATER, ColorPalettes.DEEPSLATE_SKY, ColorPalettes.DEEPSLATE_GRASS, ColorPalettes.DEEPSLATE_FOLIAGE, placed, carvers));
+        register(context, DEEPSLATE_PEAKS, createBiome(0.5F, 0.0F, ColorPalettes.DEEPSLATE_FOG, ColorPalettes.DEEPSLATE_WATER, ColorPalettes.DEEPSLATE_WATER, ColorPalettes.DEEPSLATE_SKY, ColorPalettes.DEEPSLATE_GRASS, ColorPalettes.DEEPSLATE_FOLIAGE, placed, carvers));
+        register(context, WARPED_OASIS, createBiome(1.2F, 0.0F, ColorPalettes.WARPED_FOG, ColorPalettes.WARPED_WATER, ColorPalettes.WARPED_WATER, ColorPalettes.WARPED_SKY, ColorPalettes.WARPED_GRASS, ColorPalettes.WARPED_FOLIAGE, placed, carvers));
+        register(context, FROZEN_LAVA_TUBES, createBiome(0.0F, 0.0F, ColorPalettes.FROZEN_FOG, ColorPalettes.FROZEN_WATER, ColorPalettes.FROZEN_WATER, ColorPalettes.FROZEN_SKY, ColorPalettes.FROZEN_GRASS, ColorPalettes.FROZEN_FOLIAGE, placed, carvers));
     }
 
     private static void register(BootstrapContext<Biome> context, ResourceKey<Biome> key, Biome biome) {
         context.register(key, biome);
     }
 
-    private static Biome createBiome(float temperature, float downfall, int fogColor, int waterColor, int waterFogColor, int skyColor,
+    private static Biome createBiome(float temperature, float downfall, int fogColor, int waterColor, int waterFogColor, int skyColor, int grassColor, int foliageColor,
                                      net.minecraft.core.HolderGetter<PlacedFeature> placed,
                                      net.minecraft.core.HolderGetter<ConfiguredWorldCarver<?>> carvers) {
         BiomeSpecialEffects effects = new BiomeSpecialEffects.Builder()
@@ -52,6 +52,8 @@ public class CrimsonMoonBiomes {
                 .waterColor(waterColor)
                 .waterFogColor(waterFogColor)
                 .skyColor(skyColor)
+                .grassColorOverride(grassColor)
+                .foliageColorOverride(foliageColor)
                 .build();
 
         BiomeGenerationSettings generation = new BiomeGenerationSettings.Builder(placed, carvers).build();

@@ -11,10 +11,12 @@ import net.neoforged.neoforge.common.Tags;
 
 import java.util.OptionalLong;
 
+import static dev.orbitingslice.crimson_moon.CrimsonMoon.resource;
+
 public class CrimsonMoonDimensionType {
 
     public static final ResourceKey<DimensionType> CRIMSON_TYPE =
-            ResourceKey.create(Registries.DIMENSION_TYPE, ResourceLocation.fromNamespaceAndPath("crimson_moon", "crimson_moon_type"));
+            ResourceKey.create(Registries.DIMENSION_TYPE, resource( "crimson_moon_type"));
 
     public static void bootstrap(BootstrapContext<DimensionType> context) {
         DimensionType type = new DimensionType(
@@ -30,7 +32,7 @@ public class CrimsonMoonDimensionType {
                 384,   // height
                 384,   // logical height
                 BlockTags.INFINIBURN_OVERWORLD,
-                ResourceLocation.fromNamespaceAndPath("minecraft", "overworld"),
+                ResourceLocation.withDefaultNamespace("overworld"),
                 0,
                 new DimensionType.MonsterSettings(true, false, net.minecraft.util.valueproviders.ConstantInt.of(0), 7)
         );
