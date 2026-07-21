@@ -1,27 +1,64 @@
 package dev.orbitingslice.crimson_moon.datagen.worldgen;
 
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.SurfaceRules;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
+import net.minecraft.world.level.levelgen.placement.CaveSurface;
+
+import static dev.orbitingslice.crimson_moon.datagen.worldgen.CrimsonMoonNoises.CRIMSON_SURFACE_NOISE;
 
 /**
  * Defines biome-specific surface layers for the Crimson Moon dimension.
  * Includes top, mid (stone/blackstone), and deep (deepslate) layers.
  */
 public class CrimsonMoonSurfaceRules {
+    private static final SurfaceRules.RuleSource DIRT = makeStateRule(Blocks.DIRT);
+    private static final SurfaceRules.RuleSource GRASS_BLOCK = makeStateRule(Blocks.GRASS_BLOCK);
+    private static final SurfaceRules.RuleSource DEEPSLATE = makeStateRule(Blocks.DEEPSLATE);
+    private static final SurfaceRules.RuleSource BLACKSTONE = makeStateRule(Blocks.BLACKSTONE);
+    private static final SurfaceRules.RuleSource NETHERRACK = makeStateRule(Blocks.NETHERRACK);
+    private static final SurfaceRules.RuleSource BEDROCK = makeStateRule(Blocks.BEDROCK);
+    private static final SurfaceRules.RuleSource CRIMSON_NYLIUM = makeStateRule(Blocks.CRIMSON_NYLIUM);
+    private static final SurfaceRules.RuleSource WARPED_NYLIUM = makeStateRule(Blocks.WARPED_NYLIUM);
+    private static final SurfaceRules.RuleSource RED_SAND = makeStateRule(Blocks.RED_SAND);
+    private static final SurfaceRules.RuleSource RED_SANDSTONE = makeStateRule(Blocks.RED_SANDSTONE);
+
 
     public static SurfaceRules.RuleSource makeRules() {
 
-        // Common transitions
-        SurfaceRules.RuleSource deepLayer = SurfaceRules.ifTrue(
-                SurfaceRules.yStartCheck(VerticalAnchor.absolute(30), 0),
-                SurfaceRules.state(Blocks.DEEPSLATE.defaultBlockState())
+        // Common transitions: blackstone ↔ deepslate with a noisy band between
+
+        // Helper: noisy transition band between 0 and 20
+        SurfaceRules.RuleSource BLACKSTONE_DEEPSLATE_MIX = SurfaceRules.sequence(
+                // In the transition band, use noise to choose between the two
+                SurfaceRules.ifTrue(
+                        SurfaceRules.noiseCondition(CRIMSON_SURFACE_NOISE, -0.2D, 1.0D),
+                        BLACKSTONE
+                ),
+                // Fallback in the band when noiseCondition fails
+                DEEPSLATE
         );
 
-        SurfaceRules.RuleSource midLayer = SurfaceRules.ifTrue(
-                SurfaceRules.yStartCheck(VerticalAnchor.absolute(55), 0),
-                SurfaceRules.state(Blocks.BLACKSTONE.defaultBlockState())
+        // Full vertical “gradient” column
+        SurfaceRules.RuleSource STONE_GRADIENT = SurfaceRules.sequence(
+                // Top: pure blackstone above Y=20
+                SurfaceRules.ifTrue(
+                        SurfaceRules.yBlockCheck(VerticalAnchor.absolute(15), 0),
+                        BLACKSTONE
+                ),
+                // Middle: mixed band between Y=0 and Y=20
+                SurfaceRules.ifTrue(
+                        SurfaceRules.yBlockCheck(VerticalAnchor.absolute(0), 0),
+                        BLACKSTONE_DEEPSLATE_MIX
+                ),
+                // Bottom: pure deepslate below Y=0
+                DEEPSLATE
         );
+
+        SurfaceRules.RuleSource bedrockFloor =
+                SurfaceRules.ifTrue(SurfaceRules.verticalGradient("bedrock_floor",
+                        VerticalAnchor.bottom(), VerticalAnchor.aboveBottom(5)), BEDROCK);
 
         // -----------------
         // Crimson Plains
@@ -29,12 +66,18 @@ public class CrimsonMoonSurfaceRules {
         SurfaceRules.RuleSource crimsonPlains = SurfaceRules.ifTrue(
                 SurfaceRules.isBiome(CrimsonMoonBiomes.CRIMSON_PLAINS),
                 SurfaceRules.sequence(
-                        SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR,
-                                SurfaceRules.state(Blocks.GRASS_BLOCK.defaultBlockState())),
-                        SurfaceRules.ifTrue(SurfaceRules.UNDER_FLOOR,
-                                SurfaceRules.state(Blocks.DIRT.defaultBlockState())),
-                        midLayer,
-                        deepLayer
+                        // Default surface: red-tinted grass + dirt. Crimson Plains is meant to be
+                        // the dimension's "livable default" biome (like vanilla Plains).
+                        // Nylium + crimson fungus groves are NOT handled here anymore -- they'll
+                        // come from a vegetation-patch-style configured/placed feature instead,
+                        // so they appear as small, localized groves tied to fungus tree placement
+                        // rather than a broad noise-threshold swap across ~50% of the biome.
+                        SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, GRASS_BLOCK),
+                        SurfaceRules.ifTrue(SurfaceRules.UNDER_FLOOR, DIRT),
+
+                        // ↓ let the vertical bands handle the rest
+                        bedrockFloor,
+                        STONE_GRADIENT
                 )
         );
 
@@ -48,42 +91,42 @@ public class CrimsonMoonSurfaceRules {
                                 SurfaceRules.state(Blocks.WARPED_NYLIUM.defaultBlockState())),
                         SurfaceRules.ifTrue(SurfaceRules.UNDER_FLOOR,
                                 SurfaceRules.state(Blocks.NETHERRACK.defaultBlockState())),
-                        midLayer,
-                        deepLayer
+                        bedrockFloor,
+                        STONE_GRADIENT
                 )
         );
 
         // -----------------
-        // Crimson River
-        // -----------------
+// Crimson River
+// -----------------
         SurfaceRules.RuleSource crimsonRiver = SurfaceRules.ifTrue(
                 SurfaceRules.isBiome(CrimsonMoonBiomes.CRIMSON_RIVER),
                 SurfaceRules.sequence(
-                    // Riverbed: Magma + gravel mix under Y=62
-                    SurfaceRules.ifTrue(
-                        SurfaceRules.yStartCheck(VerticalAnchor.absolute(62), 0),
-                        SurfaceRules.sequence(
-                            SurfaceRules.ifTrue(SurfaceRules.steep(),
-                                SurfaceRules.state(Blocks.GRAVEL.defaultBlockState())),
-                            SurfaceRules.state(Blocks.MAGMA_BLOCK.defaultBlockState())
-                        )
-                    ),
+                        // Banks: red sand on the surface in river biome
+                        SurfaceRules.ifTrue(
+                                SurfaceRules.ON_FLOOR,
+                                RED_SAND
+                        ),
 
-                    // Banks: crimson nylium + red sand + sand mix
-                    SurfaceRules.ifTrue(
-                        SurfaceRules.yStartCheck(VerticalAnchor.absolute(63), 0),
-                        SurfaceRules.sequence(
-                            SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR,
-                                SurfaceRules.state(Blocks.CRIMSON_NYLIUM.defaultBlockState())),
-                            SurfaceRules.state(Blocks.RED_SAND.defaultBlockState())
-                        )
-                    ),
+                        // Just below the banks: magma + gravel riverbed, 1–4 blocks under the surface
+                        SurfaceRules.ifTrue(
+                                SurfaceRules.stoneDepthCheck(1, false, 4, CaveSurface.FLOOR),
+                                SurfaceRules.sequence(
+                                        // steeper spots get gravel instead of magma
+                                        SurfaceRules.ifTrue(SurfaceRules.steep(),
+                                                SurfaceRules.state(Blocks.GRAVEL.defaultBlockState())),
+                                        SurfaceRules.state(Blocks.MAGMA_BLOCK.defaultBlockState())
+                                )
+                        ),
 
-                    // Fallback deeper layer
-                    SurfaceRules.ifTrue(SurfaceRules.UNDER_FLOOR,
-                        SurfaceRules.state(Blocks.NETHERRACK.defaultBlockState())),
-                    midLayer,
-                    deepLayer
+                        // Fallback deeper layer: netherrack before we hit the global stone gradient
+                        SurfaceRules.ifTrue(
+                                SurfaceRules.stoneDepthCheck(5, false, 20, CaveSurface.FLOOR),
+                                NETHERRACK
+                        ),
+
+                        bedrockFloor,
+                        STONE_GRADIENT
                 )
         );
 
@@ -97,8 +140,8 @@ public class CrimsonMoonSurfaceRules {
                                 SurfaceRules.state(Blocks.BLACKSTONE.defaultBlockState())),
                         SurfaceRules.ifTrue(SurfaceRules.UNDER_FLOOR,
                                 SurfaceRules.state(Blocks.BASALT.defaultBlockState())),
-                        midLayer,
-                        deepLayer
+                        bedrockFloor,
+                        STONE_GRADIENT
                 )
         );
 
@@ -112,8 +155,8 @@ public class CrimsonMoonSurfaceRules {
                                 SurfaceRules.state(Blocks.DEEPSLATE.defaultBlockState())),
                         SurfaceRules.ifTrue(SurfaceRules.UNDER_FLOOR,
                                 SurfaceRules.state(Blocks.DEEPSLATE.defaultBlockState())),
-                        deepLayer,
-                        deepLayer
+                        bedrockFloor,
+                        STONE_GRADIENT
                 )
         );
 
@@ -127,8 +170,8 @@ public class CrimsonMoonSurfaceRules {
                                 SurfaceRules.state(Blocks.PACKED_ICE.defaultBlockState())),
                         SurfaceRules.ifTrue(SurfaceRules.UNDER_FLOOR,
                                 SurfaceRules.state(Blocks.BASALT.defaultBlockState())),
-                        midLayer,
-                        deepLayer
+                        bedrockFloor,
+                        STONE_GRADIENT
                 )
         );
 
@@ -142,8 +185,8 @@ public class CrimsonMoonSurfaceRules {
                                 SurfaceRules.state(Blocks.RED_SAND.defaultBlockState())),
                         SurfaceRules.ifTrue(SurfaceRules.UNDER_FLOOR,
                                 SurfaceRules.state(Blocks.RED_SANDSTONE.defaultBlockState())),
-                        midLayer,
-                        deepLayer
+                        bedrockFloor,
+                        STONE_GRADIENT
                 )
         );
 
@@ -157,9 +200,11 @@ public class CrimsonMoonSurfaceRules {
                                 SurfaceRules.state(Blocks.DEEPSLATE.defaultBlockState())),
                         SurfaceRules.ifTrue(SurfaceRules.UNDER_FLOOR,
                                 SurfaceRules.state(Blocks.TUFF.defaultBlockState())),
-                        deepLayer
+                        bedrockFloor,
+                        STONE_GRADIENT
                 )
         );
+
 
         // Combine all biome rules + fallback
         return SurfaceRules.sequence(
@@ -176,9 +221,13 @@ public class CrimsonMoonSurfaceRules {
                 SurfaceRules.sequence(
                         SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR,
                                 SurfaceRules.state(Blocks.NETHERRACK.defaultBlockState())),
-                        midLayer,
-                        deepLayer
+                        bedrockFloor,
+                        STONE_GRADIENT
                 )
         );
+    }
+
+    private static SurfaceRules.RuleSource makeStateRule(Block block) {
+        return SurfaceRules.state(block.defaultBlockState());
     }
 }

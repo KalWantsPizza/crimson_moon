@@ -1,8 +1,6 @@
 package dev.orbitingslice.crimson_moon.datagen;
 
 import dev.orbitingslice.crimson_moon.CrimsonMoon;
-import dev.orbitingslice.crimson_moon.datagen.worldgen.*;
-import dev.orbitingslice.datagen_kit.worldgen.base.ModDataGenerators;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -20,7 +18,7 @@ import java.util.concurrent.CompletableFuture;
 
 
 @EventBusSubscriber(modid = CrimsonMoon.MOD_ID)
-public class CrimsonMoonDataGenerator extends ModDataGenerators {
+public class CrimsonMoonDataGenerator {
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event){
         DataGenerator generator = event.getGenerator();

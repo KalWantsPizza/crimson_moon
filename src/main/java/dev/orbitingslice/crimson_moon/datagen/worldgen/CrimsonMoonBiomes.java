@@ -29,8 +29,8 @@ public class CrimsonMoonBiomes {
         var placed = context.lookup(Registries.PLACED_FEATURE);
         var carvers = context.lookup(Registries.CONFIGURED_CARVER);
 
-        register(context, CRIMSON_PLAINS, createBiome(1.8F, 0.0F, ColorPalettes.CRIMSON_FOG, ColorPalettes.CRIMSON_WATER, ColorPalettes.CRIMSON_WATER, ColorPalettes.CRIMSON_SKY, ColorPalettes.CRIMSON_GRASS, ColorPalettes.CRIMSON_FOLIAGE, placed, carvers));
-        register(context, CRIMSON_RIVER, createBiome(1.4F, 0.0F, ColorPalettes.CRIMSON_FOG, ColorPalettes.CRIMSON_WATER, ColorPalettes.CRIMSON_WATER, ColorPalettes.CRIMSON_SKY, ColorPalettes.CRIMSON_GRASS, ColorPalettes.CRIMSON_FOLIAGE, placed, carvers));
+        register(context, CRIMSON_PLAINS, createBiome(0.5F, 0.4F, ColorPalettes.CRIMSON_FOG, ColorPalettes.CRIMSON_WATER, ColorPalettes.CRIMSON_WATER, ColorPalettes.CRIMSON_SKY, ColorPalettes.CRIMSON_GRASS, ColorPalettes.CRIMSON_FOLIAGE, placed, carvers));
+        register(context, CRIMSON_RIVER, createBiome(0.5F, 0.5F, ColorPalettes.CRIMSON_FOG, ColorPalettes.CRIMSON_WATER, ColorPalettes.CRIMSON_WATER, ColorPalettes.CRIMSON_SKY, ColorPalettes.CRIMSON_GRASS, ColorPalettes.CRIMSON_FOLIAGE, placed, carvers));
         register(context, LAVA_RIVER, createBiome(1.6F, 0.0F, ColorPalettes.CRIMSON_FOG, ColorPalettes.CRIMSON_LAVA, ColorPalettes.CRIMSON_LAVA, ColorPalettes.CRIMSON_SKY, ColorPalettes.CRIMSON_GRASS, ColorPalettes.CRIMSON_FOLIAGE, placed, carvers));
         register(context, CRIMSON_BEACH, createBiome(1.6F, 0.0F, ColorPalettes.CRIMSON_FOG, ColorPalettes.CRIMSON_WATER, ColorPalettes.CRIMSON_WATER, ColorPalettes.CRIMSON_SKY, ColorPalettes.CRIMSON_GRASS, ColorPalettes.CRIMSON_FOLIAGE, placed, carvers));
         register(context, SCORCHED_DELTA, createBiome(2.0F, 0.0F, ColorPalettes.CRIMSON_FOG, ColorPalettes.CRIMSON_LAVA, ColorPalettes.CRIMSON_LAVA, ColorPalettes.CRIMSON_SKY, ColorPalettes.CRIMSON_GRASS, ColorPalettes.CRIMSON_FOLIAGE, placed, carvers));

@@ -9,28 +9,28 @@
           "biome": "crimson_moon:crimson_plains",
           "parameters": {
             "continentalness": [
-              0.2,
-              0.6
+              -0.2,
+              0.8
             ],
             "depth": [
-              -0.2,
-              0.3
+              -0.4,
+              0.4
             ],
             "erosion": [
-              0.5,
+              0.2,
               0.8
             ],
             "humidity": [
-              0.3,
-              0.6
+              0.2,
+              0.8
             ],
             "offset": 0.0,
             "temperature": [
-              0.9,
+              0.7,
               1.3
             ],
             "weirdness": [
-              -0.2,
+              -0.25,
               0.2
             ]
           }
@@ -39,29 +39,29 @@
           "biome": "crimson_moon:warped_oasis",
           "parameters": {
             "continentalness": [
-              0.3,
-              0.5
+              0.25,
+              0.35
             ],
             "depth": [
-              0.0,
-              0.3
+              -0.03,
+              0.03
             ],
             "erosion": [
-              0.2,
-              0.4
+              0.1,
+              0.25
             ],
             "humidity": [
-              0.5,
-              0.9
+              0.9,
+              0.98
             ],
             "offset": 0.0,
             "temperature": [
-              0.5,
-              0.9
+              0.55,
+              0.7
             ],
             "weirdness": [
-              0.3,
-              0.7
+              0.1,
+              0.3
             ]
           }
         },
@@ -74,11 +74,11 @@
             ],
             "depth": [
               -0.1,
-              0.2
+              0.1
             ],
             "erosion": [
-              0.7,
-              1.0
+              0.55,
+              0.8
             ],
             "humidity": [
               0.0,
@@ -90,8 +90,8 @@
               1.6
             ],
             "weirdness": [
-              -0.8,
-              -0.4
+              0.55,
+              0.85
             ]
           }
         },
@@ -99,29 +99,29 @@
           "biome": "crimson_moon:crimson_river",
           "parameters": {
             "continentalness": [
-              -0.2,
+              -0.3,
               0.2
             ],
             "depth": [
-              -0.1,
-              0.1
+              -0.2,
+              0.2
             ],
             "erosion": [
-              0.6,
-              0.8
+              0.5,
+              1.0
             ],
             "humidity": [
-              0.1,
-              0.4
+              0.6,
+              1.0
             ],
             "offset": 0.0,
             "temperature": [
-              0.6,
+              0.5,
               0.9
             ],
             "weirdness": [
-              0.8,
-              1.0
+              -0.7,
+              -0.3
             ]
           }
         },
@@ -129,29 +129,29 @@
           "biome": "crimson_moon:lava_river",
           "parameters": {
             "continentalness": [
-              -0.2,
-              0.2
-            ],
-            "depth": [
-              -0.1,
+              -0.4,
               0.1
             ],
-            "erosion": [
+            "depth": [
               0.5,
-              0.8
+              1.0
+            ],
+            "erosion": [
+              0.7,
+              1.0
             ],
             "humidity": [
               0.0,
-              0.3
+              0.4
             ],
             "offset": 0.0,
             "temperature": [
-              1.1,
-              1.5
+              1.0,
+              1.6
             ],
             "weirdness": [
-              0.8,
-              1.0
+              -1.0,
+              -0.7
             ]
           }
         },
@@ -159,8 +159,8 @@
           "biome": "crimson_moon:frozen_lava_tubes",
           "parameters": {
             "continentalness": [
-              -0.5,
-              -0.2
+              -0.6,
+              -0.3
             ],
             "depth": [
               -0.1,
@@ -189,29 +189,29 @@
           "biome": "crimson_moon:crimson_beach",
           "parameters": {
             "continentalness": [
-              0.0,
-              0.3
+              -0.5,
+              0.0
             ],
             "depth": [
-              -0.1,
-              0.1
+              0.1,
+              0.4
             ],
             "erosion": [
-              0.4,
+              0.2,
               0.6
             ],
             "humidity": [
               0.3,
-              0.7
+              0.9
             ],
             "offset": 0.0,
             "temperature": [
-              0.7,
+              0.6,
               1.1
             ],
             "weirdness": [
-              0.2,
-              0.5
+              -0.2,
+              0.1
             ]
           }
         },
@@ -240,8 +240,8 @@
               0.9
             ],
             "weirdness": [
-              1.2,
-              1.5
+              1.15,
+              1.45
             ]
           }
         },
@@ -249,16 +249,16 @@
           "biome": "crimson_moon:deepslate_peaks",
           "parameters": {
             "continentalness": [
-              0.6,
-              0.9
+              0.8,
+              1.0
             ],
             "depth": [
               -0.2,
               0.2
             ],
             "erosion": [
-              0.3,
-              0.5
+              0.0,
+              0.25
             ],
             "humidity": [
               0.2,
@@ -270,8 +270,128 @@
               1.2
             ],
             "weirdness": [
-              -0.9,
+              -1.0,
               -0.6
+            ]
+          }
+        },
+        {
+          "biome": "minecraft:warm_ocean",
+          "parameters": {
+            "continentalness": [
+              -1.0,
+              -0.55
+            ],
+            "depth": [
+              -0.2,
+              0.4
+            ],
+            "erosion": [
+              0.2,
+              1.0
+            ],
+            "humidity": [
+              0.3,
+              1.0
+            ],
+            "offset": 0.0,
+            "temperature": [
+              0.6,
+              1.1
+            ],
+            "weirdness": [
+              -0.4,
+              -0.1
+            ]
+          }
+        },
+        {
+          "biome": "minecraft:badlands",
+          "parameters": {
+            "continentalness": [
+              0.3,
+              0.7
+            ],
+            "depth": [
+              0.1,
+              0.5
+            ],
+            "erosion": [
+              0.0,
+              0.2
+            ],
+            "humidity": [
+              0.0,
+              0.2
+            ],
+            "offset": 0.0,
+            "temperature": [
+              1.0,
+              1.5
+            ],
+            "weirdness": [
+              -0.1,
+              0.3
+            ]
+          }
+        },
+        {
+          "biome": "minecraft:desert",
+          "parameters": {
+            "continentalness": [
+              -0.1,
+              0.5
+            ],
+            "depth": [
+              -0.3,
+              0.1
+            ],
+            "erosion": [
+              0.3,
+              0.7
+            ],
+            "humidity": [
+              0.0,
+              0.2
+            ],
+            "offset": 0.0,
+            "temperature": [
+              0.8,
+              1.3
+            ],
+            "weirdness": [
+              -0.15,
+              0.15
+            ]
+          }
+        },
+        {
+          "biome": "minecraft:crimson_forest",
+          "parameters": {
+            "continentalness": [
+              -0.1,
+              0.6
+            ],
+            "depth": [
+              0.15,
+              0.45
+            ],
+            "erosion": [
+              0.25,
+              0.65
+            ],
+            "humidity": [
+              0.55,
+              0.85
+            ],
+            "offset": 0.0,
+            "temperature": [
+              0.7,
+              1.3
+            ],
+            "weirdness": [
+              -0.2,
+              0.15
             ]
           }
         }

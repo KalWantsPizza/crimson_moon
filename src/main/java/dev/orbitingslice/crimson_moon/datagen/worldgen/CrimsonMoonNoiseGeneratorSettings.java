@@ -26,15 +26,62 @@ public class CrimsonMoonNoiseGeneratorSettings {
             );
 
     public static void bootstrap(BootstrapContext<NoiseGeneratorSettings> context) {
-        HolderGetter<DensityFunction> densityFunctions = context.lookup(Registries.DENSITY_FUNCTION);
+        // Look up vanilla density functions
+        HolderGetter<DensityFunction> df = context.lookup(Registries.DENSITY_FUNCTION);
+
+        // Look up vanilla noise parameter sets (temperature, vegetation, shift_x, etc.)
         HolderGetter<NormalNoise.NoiseParameters> noiseParams = context.lookup(Registries.NOISE);
 
-        // Define basic vertical range and cell sizes
-        NoiseSettings settings = new NoiseSettings(
-                -64, // minY
-                384, // height
-                1,   // horizontal cell size
-                2   // vertical cell size,
+        // Climate parameters built directly from noise params / gradients,
+// so we don't touch the DENSITY_FUNCTION registry during datagen.
+
+// C ~ continents / inlandness
+        DensityFunction continents = DensityFunctions.noise(
+                noiseParams.getOrThrow(Noises.CONTINENTALNESS),
+                1.0D,
+                0.0D
+        );
+
+// E ~ erosion / rugged vs smooth
+        DensityFunction erosion = DensityFunctions.noise(
+                noiseParams.getOrThrow(Noises.EROSION),
+                1.0D,
+                0.0D
+        );
+
+// D ~ simple vertical gradient: high = positive, low = negative
+        DensityFunction depth = DensityFunctions.yClampedGradient(
+                -64,
+                320,
+                -1.0D,
+                1.0D
+        );
+
+// W ~ ridges / weirdness
+// For now, keep this flat so we don't rely on a specific Noises.* key.
+        DensityFunction ridges = DensityFunctions.zero();
+
+// Shared shift noise (1.21.1: only Noises.SHIFT exists)
+// Derive X/Z shifts directly from the same parameter set
+        DensityFunction shiftX = DensityFunctions.shiftA(
+                noiseParams.getOrThrow(Noises.SHIFT)
+        );
+        DensityFunction shiftZ = DensityFunctions.shiftB(
+                noiseParams.getOrThrow(Noises.SHIFT)
+        );
+
+        DensityFunction temperature = DensityFunctions.shiftedNoise2d(
+                shiftX,
+                shiftZ,
+                0.25D,
+                noiseParams.getOrThrow(Noises.TEMPERATURE)
+        );
+
+        DensityFunction vegetation = DensityFunctions.shiftedNoise2d(
+                shiftX,
+                shiftZ,
+                0.25D,
+                noiseParams.getOrThrow(Noises.VEGETATION)
         );
 
         // Custom router combining realistic climate noise with a stable terrain gradient
@@ -43,32 +90,24 @@ public class CrimsonMoonNoiseGeneratorSettings {
                 DensityFunctions.zero(), // fluid_level_floodedness
                 DensityFunctions.zero(), // fluid_level_spread
                 DensityFunctions.zero(), // lava
-                DensityFunctions.shiftedNoise2d(DensityFunctions.zero(), DensityFunctions.zero(), 0.015, noiseParams.getOrThrow(Noises.TEMPERATURE)), // temperature variation
-                DensityFunctions.shiftedNoise2d(DensityFunctions.zero(), DensityFunctions.zero(), 0.03, noiseParams.getOrThrow(Noises.VEGETATION)), // vegetation
-                DensityFunctions.shiftedNoise2d(DensityFunctions.zero(), DensityFunctions.zero(), 0.008, noiseParams.getOrThrow(Noises.CONTINENTALNESS)), // continents
-                DensityFunctions.shiftedNoise2d(DensityFunctions.zero(), DensityFunctions.zero(), 0.02, noiseParams.getOrThrow(Noises.EROSION)), // erosion
-                DensityFunctions.yClampedGradient(
-                        settings.minY(),
-                        settings.minY() + settings.height(),
-                        -1.0,
-                        1.0
-                ), // depth gradient
-                DensityFunctions.shiftedNoise2d(DensityFunctions.zero(), DensityFunctions.zero(), 0.06, noiseParams.getOrThrow(Noises.RIDGE)), // ridges
-                DensityFunctions.yClampedGradient(
-                        settings.minY(),
-                        settings.minY() + settings.height(),
-                        -1.0,
-                        1.0
-                ), // initial_density_without_jaggedness
-                // final_density (customized)
+                temperature,
+                vegetation,
+                continents,
+                erosion,
+                depth,
+                ridges,
+                DensityFunctions.zero(), // initial_density_without_jaggedness
                 DensityFunctions.add(
-                        DensityFunctions.mul(
-                                DensityFunctions.noise(noiseParams.getOrThrow(Noises.CONTINENTALNESS)),
-                                DensityFunctions.noise(noiseParams.getOrThrow(Noises.EROSION))
+                        DensityFunctions.yClampedGradient(
+                                47,
+                                87,
+                                1.25,
+                                -1.25
                         ),
-                        DensityFunctions.add(
-                                DensityFunctions.yClampedGradient(settings.minY(), settings.minY() + settings.height(), 1.0, -1.0),
-                                DensityFunctions.constant(-0.15)
+                        DensityFunctions.noise(
+                                noiseParams.getOrThrow(CrimsonMoonNoises.CRIMSON_BASE_NOISE),
+                                1.0,
+                                0.25
                         )
                 ),
                 DensityFunctions.zero(), // vein_toggle
@@ -76,9 +115,16 @@ public class CrimsonMoonNoiseGeneratorSettings {
                 DensityFunctions.zero()  // vein_gap
         );
 
+        NoiseSettings settings = new NoiseSettings(
+                -64,   // min_y
+                384,   // height
+                4,     // noise size horizontal
+                1      // noise size vertical
+        );
+
         context.register(CRIMSON_NOISE, new NoiseGeneratorSettings(
                 settings,
-                Blocks.STONE.defaultBlockState(),
+                Blocks.BLACKSTONE.defaultBlockState(),
                 Fluids.WATER.defaultFluidState().createLegacyBlock(),
                 router,
                 CrimsonMoonSurfaceRules.makeRules(),

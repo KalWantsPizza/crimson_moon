@@ -1,6 +1,5 @@
 package dev.orbitingslice.crimson_moon;
 
-import dev.orbitingslice.datagen_kit.worldgen.base.ModBiomes;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 
@@ -45,12 +44,6 @@ public class CrimsonMoon {
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
-        //event.enqueueWork(() -> {
-        //    ModBiomes.registerBiomes();
-        //        });
-
-
-
         // Some common setup code
         LOGGER.info("HELLO FROM COMMON SETUP");
 
