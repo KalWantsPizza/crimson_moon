@@ -45,20 +45,27 @@ public class CrimsonMoonSurfaceRules {
                 DEEPSLATE
         );
 
-        // Full vertical “gradient” column
+        // Full vertical "gradient" column -- relative to the LOCAL generated surface,
+        // not an absolute world Y. The old absolute-Y cutoffs (blackstone above y=15,
+        // deepslate only below y=0) made sense back when terrain was a fixed y47-87
+        // band, but now that terrain height varies with continentalness (ocean floor
+        // ~y32 up to peaks ~y230), an absolute cutoff meant blackstone dominated
+        // almost every exposed cliff face in the entire dimension. Using relative
+        // depth-from-surface instead keeps a consistent blackstone-crust-over-
+        // deepslate look regardless of elevation.
         SurfaceRules.RuleSource STONE_GRADIENT = SurfaceRules.sequence(
-                // Top: pure blackstone above Y=20
+                // Very deep below the local surface: pure deepslate
                 SurfaceRules.ifTrue(
-                        SurfaceRules.yBlockCheck(VerticalAnchor.absolute(15), 0),
-                        BLACKSTONE
+                        SurfaceRules.VERY_DEEP_UNDER_FLOOR,
+                        DEEPSLATE
                 ),
-                // Middle: mixed band between Y=0 and Y=20
+                // Moderately deep: noisy transition band
                 SurfaceRules.ifTrue(
-                        SurfaceRules.yBlockCheck(VerticalAnchor.absolute(0), 0),
+                        SurfaceRules.DEEP_UNDER_FLOOR,
                         BLACKSTONE_DEEPSLATE_MIX
                 ),
-                // Bottom: pure deepslate below Y=0
-                DEEPSLATE
+                // Shallow subsurface crust, right under the biome's own top/under-floor layers
+                BLACKSTONE
         );
 
         SurfaceRules.RuleSource bedrockFloor =
@@ -121,12 +128,15 @@ public class CrimsonMoonSurfaceRules {
                                 SurfaceRules.ifTrue(SurfaceRules.waterBlockCheck(-1, 0), RED_SAND)
                         ),
 
-                        // Dry banks: crimson grass dominant with red sand patches. Also gives
-                        // jungle trees / crimson fungus dirt-tag ground to actually root in --
-                        // red sand alone doesn't count as plantable ground for them.
+                        // Dry banks: crimson grass dominant with red sand patches and a rare
+                        // nylium patch. The nylium patch matters functionally, not just
+                        // cosmetically -- crimson fungus can only root on nylium/netherrack,
+                        // and without it "huge crimson fungus" (per this biome's design doc)
+                        // has literally nowhere in the biome it's allowed to place.
                         SurfaceRules.ifTrue(
                                 SurfaceRules.ON_FLOOR,
                                 SurfaceRules.sequence(
+                                        SurfaceRules.ifTrue(SurfaceRules.noiseCondition(CRIMSON_SURFACE_NOISE, -1.0D, -0.7D), CRIMSON_NYLIUM),
                                         SurfaceRules.ifTrue(SurfaceRules.noiseCondition(CRIMSON_SURFACE_NOISE, 0.5D, 1.0D), RED_SAND),
                                         GRASS_BLOCK
                                 )
@@ -292,6 +302,86 @@ public class CrimsonMoonSurfaceRules {
                 )
         );
 
+        // -----------------
+        // Crimson Grove / Taiga / Jungle -- recolored forest-type biomes, all simple
+        // grass-on-dirt (the red/cool/vivid tint comes from each biome's own
+        // grassColorOverride, not the block choice).
+        // -----------------
+        SurfaceRules.RuleSource crimsonGrove = SurfaceRules.ifTrue(
+                SurfaceRules.isBiome(CrimsonMoonBiomes.CRIMSON_GROVE),
+                SurfaceRules.sequence(
+                        SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, GRASS_BLOCK),
+                        SurfaceRules.ifTrue(SurfaceRules.UNDER_FLOOR, DIRT),
+                        bedrockFloor,
+                        STONE_GRADIENT
+                )
+        );
+
+        SurfaceRules.RuleSource crimsonTaiga = SurfaceRules.ifTrue(
+                SurfaceRules.isBiome(CrimsonMoonBiomes.CRIMSON_TAIGA),
+                SurfaceRules.sequence(
+                        SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, GRASS_BLOCK),
+                        SurfaceRules.ifTrue(SurfaceRules.UNDER_FLOOR, DIRT),
+                        bedrockFloor,
+                        STONE_GRADIENT
+                )
+        );
+
+        SurfaceRules.RuleSource crimsonJungle = SurfaceRules.ifTrue(
+                SurfaceRules.isBiome(CrimsonMoonBiomes.CRIMSON_JUNGLE),
+                SurfaceRules.sequence(
+                        SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, GRASS_BLOCK),
+                        SurfaceRules.ifTrue(SurfaceRules.UNDER_FLOOR, DIRT),
+                        bedrockFloor,
+                        STONE_GRADIENT
+                )
+        );
+
+        // -----------------
+        // Crimson Mangrove -- coastal; mud instead of dirt underneath, matching
+        // vanilla's own mangrove swamp convention.
+        // -----------------
+        SurfaceRules.RuleSource crimsonMangrove = SurfaceRules.ifTrue(
+                SurfaceRules.isBiome(CrimsonMoonBiomes.CRIMSON_MANGROVE),
+                SurfaceRules.sequence(
+                        SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, GRASS_BLOCK),
+                        SurfaceRules.ifTrue(SurfaceRules.UNDER_FLOOR,
+                                SurfaceRules.state(Blocks.MUD.defaultBlockState())),
+                        bedrockFloor,
+                        STONE_GRADIENT
+                )
+        );
+
+        // -----------------
+        // Deepslate Shore -- bare rock, no soil layer (like vanilla Stony Shore/Deepslate
+        // Peaks). Plain deepslate surface -- the cobbled deepslate texture now comes from
+        // discrete boulder formations (CrimsonMoonPlacedFeatures.COBBLED_DEEPSLATE_BOULDER_SHORE
+        // in the generation settings) instead of a broad surface-level swap, which read as
+        // too much cobbled deepslate overall.
+        // -----------------
+        SurfaceRules.RuleSource deepslateShore = SurfaceRules.ifTrue(
+                SurfaceRules.isBiome(CrimsonMoonBiomes.DEEPSLATE_SHORE),
+                SurfaceRules.sequence(
+                        SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, DEEPSLATE),
+                        SurfaceRules.ifTrue(SurfaceRules.UNDER_FLOOR, DEEPSLATE),
+                        bedrockFloor,
+                        STONE_GRADIENT
+                )
+        );
+
+        // -----------------
+        // Crimson Meadow -- grass-on-dirt, tint comes from the biome color override.
+        // -----------------
+        SurfaceRules.RuleSource crimsonMeadow = SurfaceRules.ifTrue(
+                SurfaceRules.isBiome(CrimsonMoonBiomes.CRIMSON_MEADOW),
+                SurfaceRules.sequence(
+                        SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, GRASS_BLOCK),
+                        SurfaceRules.ifTrue(SurfaceRules.UNDER_FLOOR, DIRT),
+                        bedrockFloor,
+                        STONE_GRADIENT
+                )
+        );
+
         // Combine all biome rules + fallback
         return SurfaceRules.sequence(
                 crimsonPlains,
@@ -305,7 +395,13 @@ public class CrimsonMoonSurfaceRules {
                 desert,
                 badlands,
                 warmOcean,
+                crimsonGrove,
+                crimsonTaiga,
+                crimsonJungle,
+                crimsonMangrove,
                 crimsonForest,
+                deepslateShore,
+                crimsonMeadow,
 
                 // Fallback for any undefined biome
                 SurfaceRules.sequence(

@@ -1,18 +1,21 @@
 {
   "carvers": {},
-  "downfall": 0.4,
+  "downfall": 0.6,
   "effects": {
-    "fog_color": 10500666,
-    "foliage_color": 9051678,
-    "grass_color": 11545130,
-    "sky_color": 8943792,
-    "water_color": 13400698,
-    "water_fog_color": 13400698
+    "fog_color": 13205656,
+    "foliage_color": 11034475,
+    "grass_color": 13926540,
+    "sky_color": 9472192,
+    "water_color": 14257312,
+    "water_fog_color": 14257312
   },
   "features": [
     [],
     [],
-    [],
+    [
+      "minecraft:forest_rock",
+      "crimson_moon:cobbled_deepslate_boulder_meadow"
+    ],
     [],
     [],
     [],
@@ -39,7 +42,9 @@
     [],
     [
       "minecraft:patch_grass_plain",
-      "minecraft:patch_dead_bush"
+      "minecraft:flower_meadow",
+      "minecraft:trees_meadow",
+      "minecraft:patch_berry_common"
     ]
   ],
   "has_precipitation": false,
@@ -49,13 +54,19 @@
     "axolotls": [],
     "creature": [
       {
+        "type": "minecraft:sheep",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 6
+      },
+      {
         "type": "minecraft:cow",
         "maxCount": 2,
         "minCount": 1,
-        "weight": 3
+        "weight": 4
       },
       {
-        "type": "minecraft:sheep",
+        "type": "minecraft:rabbit",
         "maxCount": 2,
         "minCount": 1,
         "weight": 3
@@ -67,19 +78,19 @@
         "type": "minecraft:zombie",
         "maxCount": 4,
         "minCount": 2,
-        "weight": 60
+        "weight": 40
       },
       {
         "type": "minecraft:skeleton",
         "maxCount": 4,
         "minCount": 2,
-        "weight": 40
+        "weight": 30
       },
       {
         "type": "minecraft:spider",
         "maxCount": 2,
         "minCount": 1,
-        "weight": 20
+        "weight": 15
       }
     ],
     "underground_water_creature": [],

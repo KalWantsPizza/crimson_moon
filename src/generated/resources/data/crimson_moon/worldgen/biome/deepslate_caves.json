@@ -52,7 +52,8 @@
       "minecraft:rooted_azalea_tree",
       "minecraft:spore_blossom",
       "minecraft:classic_vines_cave_feature",
-      "minecraft:warped_forest_vegetation"
+      "minecraft:warped_forest_vegetation",
+      "minecraft:warped_fungi"
     ]
   ],
   "has_precipitation": false,
@@ -102,16 +103,16 @@
         "weight": 3
       }
     ],
-    "underground_water_creature": [],
-    "water_ambient": [],
-    "water_creature": [
+    "underground_water_creature": [
       {
         "type": "minecraft:glow_squid",
         "maxCount": 4,
         "minCount": 2,
         "weight": 10
       }
-    ]
+    ],
+    "water_ambient": [],
+    "water_creature": []
   },
   "temperature": 0.8
 }

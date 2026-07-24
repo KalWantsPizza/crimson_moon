@@ -32,6 +32,12 @@ public class CrimsonMoonBiomes {
     public static final ResourceKey<Biome> DEEPSLATE_PEAKS = key("deepslate_peaks");
     public static final ResourceKey<Biome> WARPED_OASIS = key("warped_oasis");
     public static final ResourceKey<Biome> FROZEN_LAVA_TUBES = key("frozen_lava_tubes");
+    public static final ResourceKey<Biome> CRIMSON_GROVE = key("crimson_grove");
+    public static final ResourceKey<Biome> CRIMSON_TAIGA = key("crimson_taiga");
+    public static final ResourceKey<Biome> CRIMSON_JUNGLE = key("crimson_jungle");
+    public static final ResourceKey<Biome> CRIMSON_MANGROVE = key("crimson_mangrove");
+    public static final ResourceKey<Biome> DEEPSLATE_SHORE = key("deepslate_shore");
+    public static final ResourceKey<Biome> CRIMSON_MEADOW = key("crimson_meadow");
 
     private static ResourceKey<Biome> key(String name) {
         return ResourceKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("crimson_moon", name));
@@ -50,6 +56,12 @@ public class CrimsonMoonBiomes {
         register(context, DEEPSLATE_PEAKS, createBiome(0.5F, 0.0F, ColorPalettes.DEEPSLATE_FOG, ColorPalettes.DEEPSLATE_WATER, ColorPalettes.DEEPSLATE_WATER, ColorPalettes.DEEPSLATE_SKY, ColorPalettes.DEEPSLATE_GRASS, ColorPalettes.DEEPSLATE_FOLIAGE, deepslatePeaksGeneration(placed, carvers), deepslatePeaksSpawns()));
         register(context, WARPED_OASIS, createBiome(1.2F, 0.0F, ColorPalettes.WARPED_FOG, ColorPalettes.WARPED_WATER, ColorPalettes.WARPED_WATER, ColorPalettes.WARPED_SKY, ColorPalettes.WARPED_GRASS, ColorPalettes.WARPED_FOLIAGE, warpedOasisGeneration(placed, carvers), warpedOasisSpawns()));
         register(context, FROZEN_LAVA_TUBES, createBiome(0.0F, 0.0F, ColorPalettes.FROZEN_FOG, ColorPalettes.FROZEN_WATER, ColorPalettes.FROZEN_WATER, ColorPalettes.FROZEN_SKY, ColorPalettes.FROZEN_GRASS, ColorPalettes.FROZEN_FOLIAGE, frozenLavaTubesGeneration(placed, carvers), frozenLavaTubesSpawns()));
+        register(context, CRIMSON_GROVE, createBiome(0.8F, 0.5F, ColorPalettes.GROVE_FOG, ColorPalettes.GROVE_WATER, ColorPalettes.GROVE_WATER, ColorPalettes.GROVE_SKY, ColorPalettes.GROVE_GRASS, ColorPalettes.GROVE_FOLIAGE, crimsonGroveGeneration(placed, carvers), crimsonGroveSpawns()));
+        register(context, CRIMSON_TAIGA, createBiome(0.4F, 0.4F, ColorPalettes.TAIGA_FOG, ColorPalettes.TAIGA_WATER, ColorPalettes.TAIGA_WATER, ColorPalettes.TAIGA_SKY, ColorPalettes.TAIGA_GRASS, ColorPalettes.TAIGA_FOLIAGE, crimsonTaigaGeneration(placed, carvers), crimsonTaigaSpawns()));
+        register(context, CRIMSON_JUNGLE, createBiome(1.1F, 0.8F, ColorPalettes.JUNGLE_FOG, ColorPalettes.JUNGLE_WATER, ColorPalettes.JUNGLE_WATER, ColorPalettes.JUNGLE_SKY, ColorPalettes.JUNGLE_GRASS, ColorPalettes.JUNGLE_FOLIAGE, crimsonJungleGeneration(placed, carvers), crimsonJungleSpawns()));
+        register(context, CRIMSON_MANGROVE, createBiome(0.9F, 0.8F, ColorPalettes.MANGROVE_FOG, ColorPalettes.MANGROVE_WATER, ColorPalettes.MANGROVE_WATER, ColorPalettes.MANGROVE_SKY, ColorPalettes.MANGROVE_GRASS, ColorPalettes.MANGROVE_FOLIAGE, crimsonMangroveGeneration(placed, carvers), crimsonMangroveSpawns()));
+        register(context, DEEPSLATE_SHORE, createBiome(0.6F, 0.0F, ColorPalettes.DEEPSLATE_FOG, ColorPalettes.DEEPSLATE_WATER, ColorPalettes.DEEPSLATE_WATER, ColorPalettes.DEEPSLATE_SKY, ColorPalettes.DEEPSLATE_GRASS, ColorPalettes.DEEPSLATE_FOLIAGE, deepslateShoreGeneration(placed, carvers), deepslateShoreSpawns()));
+        register(context, CRIMSON_MEADOW, createBiome(0.5F, 0.6F, ColorPalettes.MEADOW_FOG, ColorPalettes.MEADOW_WATER, ColorPalettes.MEADOW_WATER, ColorPalettes.MEADOW_SKY, ColorPalettes.MEADOW_GRASS, ColorPalettes.MEADOW_FOLIAGE, crimsonMeadowGeneration(placed, carvers), crimsonMeadowSpawns()));
     }
 
     private static void register(BootstrapContext<Biome> context, ResourceKey<Biome> key, Biome biome) {
@@ -233,22 +245,30 @@ public class CrimsonMoonBiomes {
         // (that needs real terrain shaping, still deferred), but enough for water-creature
         // spawns to actually have somewhere to happen.
         gen.addFeature(GenerationStep.Decoration.FLUID_SPRINGS, MiscOverworldPlacements.SPRING_WATER);
+        // Dark Oak goes first, deliberately -- vanilla places features within a step in
+        // registration order, and each one can fail if an earlier feature already claimed
+        // that spot. Dark Oak needs a clear 2x2 patch (rare to begin with, on an already
+        // tiny biome); registering it after the denser warped vegetation/bamboo meant it
+        // was competing for ground that was likely already taken by the time its turn came.
+        gen.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TreePlacements.DARK_OAK_CHECKED);
         gen.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, NetherPlacements.WARPED_FOREST_VEGETATION);
-        // Dark Oak / bamboo listed multiple times to boost their effective placement density --
-        // the oasis patch is only a couple chunks large, so vanilla's normal per-chunk odds for
-        // "rare" features would almost never land within a single instance.
+        // WARPED_FOREST_VEGETATION is only ground cover (roots/sprouts/wart block) -- the
+        // actual huge warped fungus trees are a separate placement, same as
+        // TreePlacements.CRIMSON_FUNGI needed adding separately for Crimson River earlier.
+        // This was the missing piece for "no warped trees appearing naturally."
+        gen.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TreePlacements.WARPED_FUNGI);
+        // NOTE: a PlacedFeature key can only appear once per biome -- listing it multiple
+        // times to "boost density" causes a feature-order cycle crash (vanilla's
+        // cross-biome FeatureSorter can't resolve a feature that must precede itself).
+        // Reverted; density stays at each feature's own vanilla-defined rarity.
         gen.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.BAMBOO_LIGHT);
-        gen.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.BAMBOO_LIGHT);
-        gen.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TreePlacements.DARK_OAK_CHECKED);
-        gen.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TreePlacements.DARK_OAK_CHECKED);
-        gen.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TreePlacements.DARK_OAK_CHECKED);
         BiomeDefaultFeatures.addMossyStoneBlock(gen);
         return gen.build();
     }
 
     private static MobSpawnSettings warpedOasisSpawns() {
         MobSpawnSettings.Builder spawns = new MobSpawnSettings.Builder();
-        spawns.addSpawn(MobCategory.WATER_CREATURE, new MobSpawnSettings.SpawnerData(EntityType.GLOW_SQUID, 10, 2, 3));
+        spawns.addSpawn(MobCategory.UNDERGROUND_WATER_CREATURE, new MobSpawnSettings.SpawnerData(EntityType.GLOW_SQUID, 10, 2, 3));
         spawns.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.FROG, 4, 1, 2));
         spawns.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.TURTLE, 2, 1, 2));
         spawns.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.SHEEP, 4, 1, 2));
@@ -285,6 +305,7 @@ public class CrimsonMoonBiomes {
         BiomeGenerationSettings.Builder gen = new BiomeGenerationSettings.Builder(placed, carvers);
         BiomeDefaultFeatures.addLushCavesVegetationFeatures(gen);
         gen.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, NetherPlacements.WARPED_FOREST_VEGETATION);
+        gen.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TreePlacements.WARPED_FUNGI);
         gen.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, CavePlacements.GLOW_LICHEN);
         BiomeDefaultFeatures.addDripstone(gen);
         BiomeDefaultFeatures.addDefaultOres(gen);
@@ -294,7 +315,7 @@ public class CrimsonMoonBiomes {
 
     private static MobSpawnSettings deepslateCavesSpawns() {
         MobSpawnSettings.Builder spawns = new MobSpawnSettings.Builder();
-        spawns.addSpawn(MobCategory.WATER_CREATURE, new MobSpawnSettings.SpawnerData(EntityType.GLOW_SQUID, 10, 2, 4));
+        spawns.addSpawn(MobCategory.UNDERGROUND_WATER_CREATURE, new MobSpawnSettings.SpawnerData(EntityType.GLOW_SQUID, 10, 2, 4));
         spawns.addSpawn(MobCategory.AMBIENT, new MobSpawnSettings.SpawnerData(EntityType.BAT, 10, 2, 4));
         spawns.addSpawn(MobCategory.AXOLOTLS, new MobSpawnSettings.SpawnerData(EntityType.AXOLOTL, 6, 2, 3));
         spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.STRAY, 3, 1, 1));
@@ -311,6 +332,7 @@ public class CrimsonMoonBiomes {
         BiomeGenerationSettings.Builder gen = new BiomeGenerationSettings.Builder(placed, carvers);
         gen.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, CavePlacements.GLOW_LICHEN);
         gen.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, NetherPlacements.WARPED_FOREST_VEGETATION);
+        gen.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TreePlacements.WARPED_FUNGI);
         BiomeDefaultFeatures.addDripstone(gen);
         BiomeDefaultFeatures.addDefaultCrystalFormations(gen);
         return gen.build();
@@ -318,12 +340,172 @@ public class CrimsonMoonBiomes {
 
     private static MobSpawnSettings frozenLavaTubesSpawns() {
         MobSpawnSettings.Builder spawns = new MobSpawnSettings.Builder();
-        spawns.addSpawn(MobCategory.WATER_CREATURE, new MobSpawnSettings.SpawnerData(EntityType.GLOW_SQUID, 6, 1, 2));
+        spawns.addSpawn(MobCategory.UNDERGROUND_WATER_CREATURE, new MobSpawnSettings.SpawnerData(EntityType.GLOW_SQUID, 6, 1, 2));
         spawns.addSpawn(MobCategory.AMBIENT, new MobSpawnSettings.SpawnerData(EntityType.BAT, 6, 1, 2));
         spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.STRAY, 4, 1, 1));
         spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.SKELETON, 4, 1, 1));
         spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.SPIDER, 6, 1, 2));
         spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.ENDERMAN, 3, 1, 1));
+        return spawns.build();
+    }
+
+    // -----------------
+    // Crimson Grove -- recolored Forest. Uses vanilla's common, dense oak/birch
+    // tree placements (not the sparse/rare variants used elsewhere this session)
+    // so it's reliably, visibly tree-covered.
+    // -----------------
+    private static BiomeGenerationSettings crimsonGroveGeneration(HolderGetter<PlacedFeature> placed, HolderGetter<ConfiguredWorldCarver<?>> carvers) {
+        BiomeGenerationSettings.Builder gen = new BiomeGenerationSettings.Builder(placed, carvers);
+        gen.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.TREES_BIRCH_AND_OAK);
+        BiomeDefaultFeatures.addForestFlowers(gen);
+        BiomeDefaultFeatures.addForestGrass(gen);
+        BiomeDefaultFeatures.addDefaultMushrooms(gen);
+        BiomeDefaultFeatures.addDefaultOres(gen);
+        return gen.build();
+    }
+
+    private static MobSpawnSettings crimsonGroveSpawns() {
+        MobSpawnSettings.Builder spawns = new MobSpawnSettings.Builder();
+        spawns.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.WOLF, 5, 1, 2));
+        spawns.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.FOX, 4, 1, 2));
+        spawns.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.RABBIT, 3, 1, 2));
+        spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.ZOMBIE, 40, 2, 4));
+        spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.SKELETON, 30, 2, 4));
+        spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.SPIDER, 15, 1, 2));
+        return spawns.build();
+    }
+
+    // -----------------
+    // Crimson Taiga -- recolored Taiga; cooler side of this dimension's palette.
+    // Mixed with giant taiga vegetation (occasional mega spruce + huge mushrooms)
+    // and a rare Dark Oak mixed in -- Dark Oak leaves use the tintable biome
+    // foliage color (unlike spruce/birch, which are hardcoded and ignore biome
+    // color overrides entirely), so it's the one tree here whose canopy will
+    // actually show the red tint.
+    // -----------------
+    private static BiomeGenerationSettings crimsonTaigaGeneration(HolderGetter<PlacedFeature> placed, HolderGetter<ConfiguredWorldCarver<?>> carvers) {
+        BiomeGenerationSettings.Builder gen = new BiomeGenerationSettings.Builder(placed, carvers);
+        // Giant taiga vegetation (mega spruce, needs a 2x2 clear patch) and Dark Oak go
+        // FIRST, deliberately -- vanilla places features within a step in registration
+        // order, and each can fail if an earlier feature already claimed that spot.
+        // Registering them after the dense regular addTaigaTrees meant they were
+        // starved of open ground by the time their turn came, which is very likely why
+        // neither ever appeared despite exploring multiple large Taiga instances.
+        BiomeDefaultFeatures.addGiantTaigaVegetation(gen);
+        gen.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TreePlacements.DARK_OAK_CHECKED);
+        BiomeDefaultFeatures.addTaigaTrees(gen);
+        BiomeDefaultFeatures.addTaigaGrass(gen);
+        BiomeDefaultFeatures.addCommonBerryBushes(gen);
+        BiomeDefaultFeatures.addDefaultOres(gen);
+        return gen.build();
+    }
+
+    private static MobSpawnSettings crimsonTaigaSpawns() {
+        MobSpawnSettings.Builder spawns = new MobSpawnSettings.Builder();
+        spawns.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.WOLF, 6, 1, 2));
+        spawns.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.FOX, 4, 1, 2));
+        spawns.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.RABBIT, 3, 1, 2));
+        spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.ZOMBIE, 40, 2, 4));
+        spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.SKELETON, 30, 2, 4));
+        spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.SPIDER, 15, 1, 2));
+        return spawns.build();
+    }
+
+    // -----------------
+    // Crimson Jungle -- recolored Jungle; hot, humid, dense.
+    // -----------------
+    private static BiomeGenerationSettings crimsonJungleGeneration(HolderGetter<PlacedFeature> placed, HolderGetter<ConfiguredWorldCarver<?>> carvers) {
+        BiomeGenerationSettings.Builder gen = new BiomeGenerationSettings.Builder(placed, carvers);
+        BiomeDefaultFeatures.addJungleTrees(gen);
+        BiomeDefaultFeatures.addJungleGrass(gen);
+        BiomeDefaultFeatures.addJungleVines(gen);
+        BiomeDefaultFeatures.addJungleMelons(gen);
+        BiomeDefaultFeatures.addDefaultOres(gen);
+        return gen.build();
+    }
+
+    private static MobSpawnSettings crimsonJungleSpawns() {
+        MobSpawnSettings.Builder spawns = new MobSpawnSettings.Builder();
+        spawns.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.PARROT, 5, 1, 2));
+        spawns.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.OCELOT, 4, 1, 2));
+        spawns.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.CHICKEN, 4, 1, 2));
+        spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.ZOMBIE, 40, 2, 4));
+        spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.SKELETON, 30, 2, 4));
+        spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.SPIDER, 15, 1, 2));
+        return spawns.build();
+    }
+
+    // -----------------
+    // Crimson Mangrove -- recolored Mangrove Swamp; coastal, wet, coral-toned.
+    // -----------------
+    private static BiomeGenerationSettings crimsonMangroveGeneration(HolderGetter<PlacedFeature> placed, HolderGetter<ConfiguredWorldCarver<?>> carvers) {
+        BiomeGenerationSettings.Builder gen = new BiomeGenerationSettings.Builder(placed, carvers);
+        BiomeDefaultFeatures.addMangroveSwampVegetation(gen);
+        BiomeDefaultFeatures.addDefaultOres(gen);
+        return gen.build();
+    }
+
+    private static MobSpawnSettings crimsonMangroveSpawns() {
+        MobSpawnSettings.Builder spawns = new MobSpawnSettings.Builder();
+        spawns.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.FROG, 8, 2, 3));
+        spawns.addSpawn(MobCategory.AMBIENT, new MobSpawnSettings.SpawnerData(EntityType.BAT, 4, 1, 2));
+        spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.ZOMBIE, 40, 2, 4));
+        spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.SKELETON, 30, 2, 4));
+        spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.SPIDER, 15, 1, 2));
+        spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.DROWNED, 5, 1, 1));
+        return spawns.build();
+    }
+
+    // -----------------
+    // Deepslate Shore -- barren, rocky coastline; ore-rich and exposed, like vanilla
+    // Stony Shore. Fills a climate gap between Warm Ocean and Crimson River/Beach
+    // that Deepslate Peaks was previously bleeding into.
+    // -----------------
+    private static BiomeGenerationSettings deepslateShoreGeneration(HolderGetter<PlacedFeature> placed, HolderGetter<ConfiguredWorldCarver<?>> carvers) {
+        BiomeGenerationSettings.Builder gen = new BiomeGenerationSettings.Builder(placed, carvers);
+        gen.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, CavePlacements.GLOW_LICHEN);
+        BiomeDefaultFeatures.addMossyStoneBlock(gen);
+        // Cobbled deepslate boulders, interspersed with the mossy ones above rather than
+        // replacing them -- discrete formations instead of the broad surface-level cobbled
+        // deepslate swap that felt like too much.
+        gen.addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, CrimsonMoonPlacedFeatures.COBBLED_DEEPSLATE_BOULDER_SHORE);
+        BiomeDefaultFeatures.addDefaultOres(gen);
+        BiomeDefaultFeatures.addExtraEmeralds(gen);
+        return gen.build();
+    }
+
+    private static MobSpawnSettings deepslateShoreSpawns() {
+        MobSpawnSettings.Builder spawns = new MobSpawnSettings.Builder();
+        spawns.addSpawn(MobCategory.WATER_AMBIENT, new MobSpawnSettings.SpawnerData(EntityType.COD, 5, 2, 3));
+        spawns.addSpawn(MobCategory.WATER_AMBIENT, new MobSpawnSettings.SpawnerData(EntityType.SALMON, 4, 2, 3));
+        spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.ZOMBIE, 40, 2, 4));
+        spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.SKELETON, 30, 2, 4));
+        spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.SPIDER, 15, 1, 2));
+        return spawns.build();
+    }
+
+    // -----------------
+    // Crimson Meadow -- recolored Meadow; cooler Plains-to-Peaks foothills transition.
+    // -----------------
+    private static BiomeGenerationSettings crimsonMeadowGeneration(HolderGetter<PlacedFeature> placed, HolderGetter<ConfiguredWorldCarver<?>> carvers) {
+        BiomeGenerationSettings.Builder gen = new BiomeGenerationSettings.Builder(placed, carvers);
+        BiomeDefaultFeatures.addMeadowVegetation(gen);
+        BiomeDefaultFeatures.addCommonBerryBushes(gen);
+        BiomeDefaultFeatures.addMossyStoneBlock(gen);
+        // Same cobbled deepslate boulders as Deepslate Shore, at a lower rate here.
+        gen.addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, CrimsonMoonPlacedFeatures.COBBLED_DEEPSLATE_BOULDER_MEADOW);
+        BiomeDefaultFeatures.addDefaultOres(gen);
+        return gen.build();
+    }
+
+    private static MobSpawnSettings crimsonMeadowSpawns() {
+        MobSpawnSettings.Builder spawns = new MobSpawnSettings.Builder();
+        spawns.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.SHEEP, 6, 1, 2));
+        spawns.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.COW, 4, 1, 2));
+        spawns.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.RABBIT, 3, 1, 2));
+        spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.ZOMBIE, 40, 2, 4));
+        spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.SKELETON, 30, 2, 4));
+        spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.SPIDER, 15, 1, 2));
         return spawns.build();
     }
 }

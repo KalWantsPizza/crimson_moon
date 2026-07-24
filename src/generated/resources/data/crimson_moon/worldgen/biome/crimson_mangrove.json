@@ -1,13 +1,13 @@
 {
   "carvers": {},
-  "downfall": 0.4,
+  "downfall": 0.8,
   "effects": {
-    "fog_color": 10500666,
-    "foliage_color": 9051678,
-    "grass_color": 11545130,
-    "sky_color": 8943792,
-    "water_color": 13400698,
-    "water_fog_color": 13400698
+    "fog_color": 13073006,
+    "foliage_color": 9388080,
+    "grass_color": 12672072,
+    "sky_color": 9471144,
+    "water_color": 13403511,
+    "water_fog_color": 13403511
   },
   "features": [
     [],
@@ -38,27 +38,30 @@
     [],
     [],
     [
-      "minecraft:patch_grass_plain",
-      "minecraft:patch_dead_bush"
+      "minecraft:trees_mangrove",
+      "minecraft:patch_grass_normal",
+      "minecraft:patch_dead_bush",
+      "minecraft:patch_waterlily"
     ]
   ],
   "has_precipitation": false,
   "spawn_costs": {},
   "spawners": {
-    "ambient": [],
+    "ambient": [
+      {
+        "type": "minecraft:bat",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 4
+      }
+    ],
     "axolotls": [],
     "creature": [
       {
-        "type": "minecraft:cow",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 3
-      },
-      {
-        "type": "minecraft:sheep",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 3
+        "type": "minecraft:frog",
+        "maxCount": 3,
+        "minCount": 2,
+        "weight": 8
       }
     ],
     "misc": [],
@@ -67,24 +70,30 @@
         "type": "minecraft:zombie",
         "maxCount": 4,
         "minCount": 2,
-        "weight": 60
+        "weight": 40
       },
       {
         "type": "minecraft:skeleton",
         "maxCount": 4,
         "minCount": 2,
-        "weight": 40
+        "weight": 30
       },
       {
         "type": "minecraft:spider",
         "maxCount": 2,
         "minCount": 1,
-        "weight": 20
+        "weight": 15
+      },
+      {
+        "type": "minecraft:drowned",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 5
       }
     ],
     "underground_water_creature": [],
     "water_ambient": [],
     "water_creature": []
   },
-  "temperature": 0.5
+  "temperature": 0.9
 }

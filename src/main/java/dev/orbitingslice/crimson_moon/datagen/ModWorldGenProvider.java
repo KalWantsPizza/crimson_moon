@@ -13,6 +13,8 @@ import java.util.concurrent.CompletableFuture;
 
 public class ModWorldGenProvider extends DatapackBuiltinEntriesProvider {
     public static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
+            .add(Registries.CONFIGURED_FEATURE, CrimsonMoonFeatures::bootstrap)
+            .add(Registries.PLACED_FEATURE, CrimsonMoonPlacedFeatures::bootstrap)
             .add(Registries.BIOME, CrimsonMoonBiomes::bootstrap)
             .add(Registries.NOISE_SETTINGS, CrimsonMoonNoiseGeneratorSettings::bootstrap)
             .add(Registries.DIMENSION_TYPE, CrimsonMoonDimensionType::bootstrap)

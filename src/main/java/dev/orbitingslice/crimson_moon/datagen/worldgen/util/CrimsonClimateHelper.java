@@ -81,14 +81,17 @@ public class CrimsonClimateHelper {
         }
 
         public Pair<Climate.ParameterPoint, Holder<Biome>> build() {
+            // Climate.ParameterPoint's real field order is (temperature, humidity,
+            // continentalness, erosion, depth, weirdness, offset) -- depth and weirdness
+            // were previously swapped here, silently mislabeling every biome's climate point.
             return Pair.of(
                 Climate.parameters(
                     Climate.Parameter.span(minTemp, maxTemp),
                     Climate.Parameter.span(minHumidity, maxHumidity),
                     Climate.Parameter.span(minContinentalness, maxContinentalness),
                     Climate.Parameter.span(minErosion, maxErosion),
-                    Climate.Parameter.span(minWeirdness, maxWeirdness),
                     Climate.Parameter.span(minDepth, maxDepth),
+                    Climate.Parameter.span(minWeirdness, maxWeirdness),
                     offset
                 ),
                 biomeHolder

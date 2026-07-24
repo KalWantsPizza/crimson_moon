@@ -24,12 +24,10 @@
       "minecraft:spring_water"
     ],
     [
+      "minecraft:dark_oak_checked",
       "minecraft:warped_forest_vegetation",
-      "minecraft:bamboo_light",
-      "minecraft:bamboo_light",
-      "minecraft:dark_oak_checked",
-      "minecraft:dark_oak_checked",
-      "minecraft:dark_oak_checked"
+      "minecraft:warped_fungi",
+      "minecraft:bamboo_light"
     ]
   ],
   "has_precipitation": false,
@@ -66,16 +64,16 @@
         "weight": 2
       }
     ],
-    "underground_water_creature": [],
-    "water_ambient": [],
-    "water_creature": [
+    "underground_water_creature": [
       {
         "type": "minecraft:glow_squid",
         "maxCount": 3,
         "minCount": 2,
         "weight": 10
       }
-    ]
+    ],
+    "water_ambient": [],
+    "water_creature": []
   },
   "temperature": 1.2
 }
