@@ -9,7 +9,28 @@
     "water_color": 16729344,
     "water_fog_color": 16729344
   },
-  "features": [],
+  "features": [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [
+      "minecraft:ore_magma"
+    ],
+    [
+      "minecraft:basalt_blobs",
+      "minecraft:blackstone_blobs",
+      "minecraft:delta",
+      "minecraft:spring_delta"
+    ],
+    [],
+    [
+      "minecraft:patch_crimson_roots",
+      "minecraft:nether_sprouts"
+    ]
+  ],
   "has_precipitation": false,
   "spawn_costs": {},
   "spawners": {
@@ -17,7 +38,56 @@
     "axolotls": [],
     "creature": [],
     "misc": [],
-    "monster": [],
+    "monster": [
+      {
+        "type": "minecraft:enderman",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 10
+      },
+      {
+        "type": "minecraft:magma_cube",
+        "maxCount": 4,
+        "minCount": 2,
+        "weight": 30
+      },
+      {
+        "type": "minecraft:zombified_piglin",
+        "maxCount": 3,
+        "minCount": 2,
+        "weight": 30
+      },
+      {
+        "type": "minecraft:skeleton",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 8
+      },
+      {
+        "type": "minecraft:zombie",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 8
+      },
+      {
+        "type": "minecraft:spider",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 8
+      },
+      {
+        "type": "minecraft:piglin",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 5
+      },
+      {
+        "type": "minecraft:hoglin",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 5
+      }
+    ],
     "underground_water_creature": [],
     "water_ambient": [],
     "water_creature": []

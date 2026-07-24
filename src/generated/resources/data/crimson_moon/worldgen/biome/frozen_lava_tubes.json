@@ -9,18 +9,77 @@
     "water_color": 10079487,
     "water_fog_color": 10079487
   },
-  "features": [],
+  "features": [
+    [],
+    [],
+    [
+      "minecraft:large_dripstone",
+      "minecraft:amethyst_geode"
+    ],
+    [],
+    [],
+    [],
+    [],
+    [
+      "minecraft:glow_lichen",
+      "minecraft:dripstone_cluster",
+      "minecraft:pointed_dripstone"
+    ],
+    [],
+    [
+      "minecraft:warped_forest_vegetation"
+    ]
+  ],
   "has_precipitation": false,
   "spawn_costs": {},
   "spawners": {
-    "ambient": [],
+    "ambient": [
+      {
+        "type": "minecraft:bat",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 6
+      }
+    ],
     "axolotls": [],
     "creature": [],
     "misc": [],
-    "monster": [],
+    "monster": [
+      {
+        "type": "minecraft:stray",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 4
+      },
+      {
+        "type": "minecraft:skeleton",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 4
+      },
+      {
+        "type": "minecraft:spider",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 6
+      },
+      {
+        "type": "minecraft:enderman",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 3
+      }
+    ],
     "underground_water_creature": [],
     "water_ambient": [],
-    "water_creature": []
+    "water_creature": [
+      {
+        "type": "minecraft:glow_squid",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 6
+      }
+    ]
   },
   "temperature": 0.0
 }

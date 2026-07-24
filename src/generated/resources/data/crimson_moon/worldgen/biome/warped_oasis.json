@@ -9,18 +9,73 @@
     "water_color": 5943978,
     "water_fog_color": 5943978
   },
-  "features": [],
+  "features": [
+    [],
+    [],
+    [
+      "minecraft:forest_rock"
+    ],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [
+      "minecraft:spring_water"
+    ],
+    [
+      "minecraft:warped_forest_vegetation",
+      "minecraft:bamboo_light",
+      "minecraft:bamboo_light",
+      "minecraft:dark_oak_checked",
+      "minecraft:dark_oak_checked",
+      "minecraft:dark_oak_checked"
+    ]
+  ],
   "has_precipitation": false,
   "spawn_costs": {},
   "spawners": {
     "ambient": [],
     "axolotls": [],
-    "creature": [],
+    "creature": [
+      {
+        "type": "minecraft:frog",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 4
+      },
+      {
+        "type": "minecraft:turtle",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 2
+      },
+      {
+        "type": "minecraft:sheep",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 4
+      }
+    ],
     "misc": [],
-    "monster": [],
+    "monster": [
+      {
+        "type": "minecraft:enderman",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 2
+      }
+    ],
     "underground_water_creature": [],
     "water_ambient": [],
-    "water_creature": []
+    "water_creature": [
+      {
+        "type": "minecraft:glow_squid",
+        "maxCount": 3,
+        "minCount": 2,
+        "weight": 10
+      }
+    ]
   },
   "temperature": 1.2
 }

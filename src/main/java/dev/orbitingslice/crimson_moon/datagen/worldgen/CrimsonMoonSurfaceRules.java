@@ -1,5 +1,6 @@
 package dev.orbitingslice.crimson_moon.datagen.worldgen;
 
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.SurfaceRules;
@@ -23,6 +24,10 @@ public class CrimsonMoonSurfaceRules {
     private static final SurfaceRules.RuleSource WARPED_NYLIUM = makeStateRule(Blocks.WARPED_NYLIUM);
     private static final SurfaceRules.RuleSource RED_SAND = makeStateRule(Blocks.RED_SAND);
     private static final SurfaceRules.RuleSource RED_SANDSTONE = makeStateRule(Blocks.RED_SANDSTONE);
+    private static final SurfaceRules.RuleSource MOSS_BLOCK = makeStateRule(Blocks.MOSS_BLOCK);
+    private static final SurfaceRules.RuleSource TERRACOTTA = makeStateRule(Blocks.TERRACOTTA);
+    private static final SurfaceRules.RuleSource ORANGE_TERRACOTTA = makeStateRule(Blocks.ORANGE_TERRACOTTA);
+    private static final SurfaceRules.RuleSource RED_TERRACOTTA = makeStateRule(Blocks.RED_TERRACOTTA);
 
 
     public static SurfaceRules.RuleSource makeRules() {
@@ -87,8 +92,15 @@ public class CrimsonMoonSurfaceRules {
         SurfaceRules.RuleSource warpedOasis = SurfaceRules.ifTrue(
                 SurfaceRules.isBiome(CrimsonMoonBiomes.WARPED_OASIS),
                 SurfaceRules.sequence(
+                        // Warped nylium base with moss and teal-tinted grass patches (grass
+                        // renders teal via this biome's grassColorOverride). Also gives Dark
+                        // Oak trees dirt-tag ground to root in -- nylium itself doesn't count.
                         SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR,
-                                SurfaceRules.state(Blocks.WARPED_NYLIUM.defaultBlockState())),
+                                SurfaceRules.sequence(
+                                        SurfaceRules.ifTrue(SurfaceRules.noiseCondition(CRIMSON_SURFACE_NOISE, 0.55D, 1.0D), GRASS_BLOCK),
+                                        SurfaceRules.ifTrue(SurfaceRules.noiseCondition(CRIMSON_SURFACE_NOISE, 0.3D, 0.55D), MOSS_BLOCK),
+                                        SurfaceRules.state(Blocks.WARPED_NYLIUM.defaultBlockState())
+                                )),
                         SurfaceRules.ifTrue(SurfaceRules.UNDER_FLOOR,
                                 SurfaceRules.state(Blocks.NETHERRACK.defaultBlockState())),
                         bedrockFloor,
@@ -102,10 +114,22 @@ public class CrimsonMoonSurfaceRules {
         SurfaceRules.RuleSource crimsonRiver = SurfaceRules.ifTrue(
                 SurfaceRules.isBiome(CrimsonMoonBiomes.CRIMSON_RIVER),
                 SurfaceRules.sequence(
-                        // Banks: red sand on the surface in river biome
+                        // Underwater riverbed: red sand top (gravel/magma follows a few blocks
+                        // down, below).
                         SurfaceRules.ifTrue(
                                 SurfaceRules.ON_FLOOR,
-                                RED_SAND
+                                SurfaceRules.ifTrue(SurfaceRules.waterBlockCheck(-1, 0), RED_SAND)
+                        ),
+
+                        // Dry banks: crimson grass dominant with red sand patches. Also gives
+                        // jungle trees / crimson fungus dirt-tag ground to actually root in --
+                        // red sand alone doesn't count as plantable ground for them.
+                        SurfaceRules.ifTrue(
+                                SurfaceRules.ON_FLOOR,
+                                SurfaceRules.sequence(
+                                        SurfaceRules.ifTrue(SurfaceRules.noiseCondition(CRIMSON_SURFACE_NOISE, 0.5D, 1.0D), RED_SAND),
+                                        GRASS_BLOCK
+                                )
                         ),
 
                         // Just below the banks: magma + gravel riverbed, 1–4 blocks under the surface
@@ -205,6 +229,68 @@ public class CrimsonMoonSurfaceRules {
                 )
         );
 
+        // -----------------
+        // Desert (vanilla) -- red sand/sandstone to match the dimension's palette instead
+        // of vanilla's tan sand.
+        // -----------------
+        SurfaceRules.RuleSource desert = SurfaceRules.ifTrue(
+                SurfaceRules.isBiome(Biomes.DESERT),
+                SurfaceRules.sequence(
+                        SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, RED_SAND),
+                        SurfaceRules.ifTrue(SurfaceRules.UNDER_FLOOR, RED_SANDSTONE),
+                        bedrockFloor,
+                        STONE_GRADIENT
+                )
+        );
+
+        // -----------------
+        // Badlands (vanilla) -- red sand top with a light noise-based terracotta color
+        // mix underneath. Not full vanilla mesa banding (this generator doesn't do
+        // biome-driven terracing), just enough variation to read as "badlands" rather
+        // than a single flat color.
+        // -----------------
+        SurfaceRules.RuleSource badlandsTerracottaMix = SurfaceRules.sequence(
+                SurfaceRules.ifTrue(SurfaceRules.noiseCondition(CRIMSON_SURFACE_NOISE, 0.3D, 1.0D), ORANGE_TERRACOTTA),
+                SurfaceRules.ifTrue(SurfaceRules.noiseCondition(CRIMSON_SURFACE_NOISE, -0.3D, 0.3D), RED_TERRACOTTA),
+                TERRACOTTA
+        );
+        SurfaceRules.RuleSource badlands = SurfaceRules.ifTrue(
+                SurfaceRules.isBiome(Biomes.BADLANDS),
+                SurfaceRules.sequence(
+                        SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, RED_SAND),
+                        SurfaceRules.ifTrue(SurfaceRules.UNDER_FLOOR, badlandsTerracottaMix),
+                        bedrockFloor,
+                        STONE_GRADIENT
+                )
+        );
+
+        // -----------------
+        // Warm Ocean (vanilla)
+        // -----------------
+        SurfaceRules.RuleSource warmOcean = SurfaceRules.ifTrue(
+                SurfaceRules.isBiome(Biomes.WARM_OCEAN),
+                SurfaceRules.sequence(
+                        SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR,
+                                SurfaceRules.state(Blocks.SAND.defaultBlockState())),
+                        SurfaceRules.ifTrue(SurfaceRules.UNDER_FLOOR,
+                                SurfaceRules.state(Blocks.SANDSTONE.defaultBlockState())),
+                        bedrockFloor,
+                        STONE_GRADIENT
+                )
+        );
+
+        // -----------------
+        // Crimson Forest (vanilla)
+        // -----------------
+        SurfaceRules.RuleSource crimsonForest = SurfaceRules.ifTrue(
+                SurfaceRules.isBiome(Biomes.CRIMSON_FOREST),
+                SurfaceRules.sequence(
+                        SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, CRIMSON_NYLIUM),
+                        SurfaceRules.ifTrue(SurfaceRules.UNDER_FLOOR, NETHERRACK),
+                        bedrockFloor,
+                        STONE_GRADIENT
+                )
+        );
 
         // Combine all biome rules + fallback
         return SurfaceRules.sequence(
@@ -216,6 +302,10 @@ public class CrimsonMoonSurfaceRules {
                 frozenLavaTubes,
                 crimsonBeach,
                 deepslateCaves,
+                desert,
+                badlands,
+                warmOcean,
+                crimsonForest,
 
                 // Fallback for any undefined biome
                 SurfaceRules.sequence(

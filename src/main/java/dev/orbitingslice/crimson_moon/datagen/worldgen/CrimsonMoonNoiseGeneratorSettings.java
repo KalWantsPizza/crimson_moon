@@ -57,10 +57,6 @@ public class CrimsonMoonNoiseGeneratorSettings {
                 1.0D
         );
 
-// W ~ ridges / weirdness
-// For now, keep this flat so we don't rely on a specific Noises.* key.
-        DensityFunction ridges = DensityFunctions.zero();
-
 // Shared shift noise (1.21.1: only Noises.SHIFT exists)
 // Derive X/Z shifts directly from the same parameter set
         DensityFunction shiftX = DensityFunctions.shiftA(
@@ -68,6 +64,16 @@ public class CrimsonMoonNoiseGeneratorSettings {
         );
         DensityFunction shiftZ = DensityFunctions.shiftB(
                 noiseParams.getOrThrow(Noises.SHIFT)
+        );
+
+// W ~ ridges / weirdness. Drives biome patchiness (e.g. Warped Oasis' "micro" pockets) --
+// was previously DensityFunctions.zero(), which made weirdness constant everywhere and
+// silently disabled any biome sizing/exclusion that depended on it.
+        DensityFunction ridges = DensityFunctions.shiftedNoise2d(
+                shiftX,
+                shiftZ,
+                0.25D,
+                noiseParams.getOrThrow(Noises.RIDGE)
         );
 
         DensityFunction temperature = DensityFunctions.shiftedNoise2d(
